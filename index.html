@@ -11,6 +11,8 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" 
           crossorigin="anonymous">
+    <!-- Font Awesome (untuk icon refresh & pagination) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
 
     <!-- DataTables CSS -->
@@ -43,26 +45,38 @@
         background-color: #fff;
         color: #212529;
       }
-      /* DataTables untuk light mode */
+      /* DataTables (light mode) */
       table.dataTable thead th {
         background-color: #e9ecef;
         color: #212529;
       }
 
-      /* Agar tabel tidak scroll ke samping, kita pakai table-layout fixed + wrap teks */
+      /* Agar DataTables tidak meluber keluar card body */
+      .card-body {
+        overflow-x: hidden;
+      }
+      .dataTables_wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      /* Memperkecil padding pada DataTables agar lebih responsive */
+      table.dataTable thead th, 
+      table.dataTable tbody td {
+        padding: 0.5rem;
+      }
+
       table.dataTable {
         width: 100% !important;
-        table-layout: auto !important;  /* paksa lebar kolom mengikuti lebar tabel */
-        word-wrap: break-word;           /* bungkus kata */
-      }
-      table.dataTable th, 
-      table.dataTable td {
-        white-space: normal !important;  /* izinkan teks multi-baris */
+        table-layout: auto !important;
+        white-space: normal !important;
+        /* word-break: break-word;  // Aktifkan jika ada kata super panjang */
       }
 
       /*
         DARK MODE
-        Override warna agar tidak terjadi perbedaan latar belakang yang berantakan.
+        Override warna agar tidak berantakan, termasuk saat kolom disort.
       */
       @media (prefers-color-scheme: dark) {
         body {
@@ -90,9 +104,28 @@
           color: #e9ecef !important;
         }
 
+        /* Override semua kelas sorting agar tetap dark saat di-sort */
+        table.dataTable thead th.sorting,
+        table.dataTable thead th.sorting_asc,
+        table.dataTable thead th.sorting_desc,
+        table.dataTable thead th.sorting_asc_disabled,
+        table.dataTable thead th.sorting_desc_disabled {
+          background-color: #343a40 !important;
+          color: #e9ecef !important;
+        }
+
+        /* Aturan untuk baris yang sedang disorot (sorting_1) */
+        table.dataTable.display tbody tr.even > .sorting_1, 
+        table.dataTable.order-column.stripe tbody tr.even > .sorting_1,
+        table.dataTable.display tbody tr.odd > .sorting_1, 
+        table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+          background-color: #1e1e1e !important;
+          color: #e9ecef !important;
+        }
+
         /* Tabel body */
         table.dataTable tbody tr {
-          background-color: #1e1e1e !important; 
+          background-color: #1e1e1e !important;
           color: #e9ecef !important;
         }
 
@@ -101,18 +134,16 @@
           background-color: #333333 !important;
         }
 
-        /* background nomor jadi gelap saat darkmode */
+        /* Background nomor */
         table.dataTable tbody tr td:first-child {
           background-color: #1e1e1e !important;
         }
 
-        /* tulisan di kolom input search dan show entries menjadi terang */
+        /* Tulisan di kontrol DataTables */
         .dataTables_wrapper .dataTables_filter input,
         .dataTables_wrapper .dataTables_length select {
           color: #e9ecef !important;
         }
-
-        /* Style untuk paging, search info, dsb. */
         .dataTables_wrapper .dataTables_filter label,
         .dataTables_wrapper .dataTables_length label,
         .dataTables_wrapper .dataTables_info {
@@ -134,30 +165,29 @@
   <body>
       
     <div id="app">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+      <!-- Navbar tanpa tombol hamburger; tombol Refresh diposisikan di sebelah kiri judul di card header -->
+      <nav class="navbar navbar-dark bg-success">
         <a class="navbar-brand" href="index.html">Al-Qur'an</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" 
-                data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" 
-                aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
       </nav>
       
       <div class="container">
         <div class="row">
           <div class="col-lg-12">
             <div class="card my-5 border-0 shadow">
-              <div class="card-header bg-success text-light">
-                Daftar Surah
+              <!-- Card header dengan judul dan tombol refresh (ikon) -->
+              <div class="card-header bg-success text-light d-flex justify-content-between align-items-center">
+                <span>Daftar Surah</span>
+                <button class="btn btn-outline-light btn-sm" @click="refreshPage" title="Refresh">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
               </div>
               <div class="card-body">
                 <!-- Animasi loading manual -->
                 <div v-if="loading" class="d-flex justify-content-center">
                   <div class="spinner"></div>
                 </div>
-                <!-- Hilangkan "table-responsive" agar tidak ada scroll horizontal -->
                 <div v-else>
-                  <table class="display table" style="width:100%" id="list">
+                  <table class="display table" id="list">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -169,10 +199,10 @@
                     <tbody>
                       <!-- Kolom pertama dikosongkan agar DataTables yang mengisinya -->
                       <tr v-for="data in table" :key="data.nomor">
-                        <td></td> 
+                        <td></td>
                         <td>
                           <a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" 
-                             v-on:click="getDetail(data.nomor - 1)"> 
+                             @click="getDetail(data.nomor - 1)">
                             {{ data.asma }}<br>
                             {{ data.nama }}
                           </a>
@@ -181,7 +211,7 @@
                         <td>{{ data.ayat }}</td>
                       </tr>
                     </tbody>
-                  </table> 
+                  </table>
                 </div>
               </div>
             </div>
@@ -197,7 +227,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <!-- Loading manual di modal -->
+                    <!-- Animasi loading manual di modal -->
                     <div v-if="loading2" class="d-flex justify-content-center">
                       <div class="spinner"></div>
                     </div>
@@ -219,14 +249,14 @@
                               <audio :src="detail.audio" controls></audio>
                             </dd>
                             <dt class="col-sm-3 text-truncate">Keterangan</dt>
-                            <dd class="col-sm-9 border border-secondary" style="max-height: 250px;overflow-y: scroll;">
+                            <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
                               <span v-html="detail.keterangan"></span>
                             </dd>
                           </dl>
                         </div>
                         <div class="col-lg-6">
                           <h3 class="h3 underline">Bacaan Surah {{ detail.nama }}</h3>
-                          <div class="border border-success p-3" style="max-height: 450px;overflow-y: scroll;">
+                          <div class="border border-success p-3" style="max-height: 450px; overflow-y: scroll;">
                             <span v-for="(ayat, index) in ayats" :key="index">
                               <p>
                                 <span class="badge badge-pill badge-success">
@@ -304,6 +334,9 @@
               }, response => {
                 console.log('getAyat error ' + response);
               });
+          },
+          refreshPage() {
+            window.location.reload();
           }
         },
         mounted() {
@@ -313,12 +346,16 @@
               this.table = response.body;
               this.loading = false;
               this.$nextTick(function() {
-                // Inisialisasi DataTables tanpa extension Responsive 
-                // agar tidak ada tombol "expand" atau scroll horizontal
                 $('#list').DataTable({
                   paging: true,
                   searching: true,
                   info: true,
+                  language: {
+                    paginate: {
+                      previous: '<i class="fa fa-chevron-left"></i>',
+                      next: '<i class="fa fa-chevron-right"></i>'
+                    }
+                  },
                   // Kolom pertama "No" diisi nomor baris
                   columnDefs: [
                     {
