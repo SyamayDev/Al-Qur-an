@@ -244,6 +244,10 @@
                             <dd class="col-sm-9">{{ detail.arti }}</dd>
                             <dt class="col-sm-3">Diturunkan di</dt>
                             <dd class="col-sm-9">{{ detail.type }}</dd>
+                            <dt class="col-sm-3">Audio</dt>
+                            <dd class="col-sm-9">
+                              <audio :src="audioUrl" controls></audio>
+                            </dd>
                             <dt class="col-sm-3 text-truncate">Keterangan</dt>
                             <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
                               <span v-html="detail.keterangan"></span>
@@ -306,18 +310,20 @@
         el: '#app',
         data: {
           table: [],
-          detail: [],
+          detail: {},
           ayats: [],
           loading: false,
-          loading2: false
+          loading2: false,
+          audioUrl: ''
         },
         methods: {
           getDetail(index) {
             this.loading2 = true;
             this.$http.get('https://api.npoint.io/99c279bb173a6e28359c/data/' + index + '/')
               .then(response => {
-                this.getSurah(response.body.nomor);
                 this.detail = response.body;
+                this.getSurah(response.body.nomor);
+                this.getAudio(response.body.nomor);
               }, response => {
                 console.log('getDetail error ' + response);
               });
@@ -330,6 +336,10 @@
               }, response => {
                 console.log('getAyat error ' + response);
               });
+          },
+          getAudio(nomor) {
+            // Mendapatkan URL audio menggunakan Quran.com API dari Alafasy recitation
+            this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomor}.mp3`;
           },
           refreshPage() {
             window.location.reload();
