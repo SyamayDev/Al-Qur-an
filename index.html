@@ -244,10 +244,6 @@
                             <dd class="col-sm-9">{{ detail.arti }}</dd>
                             <dt class="col-sm-3">Diturunkan di</dt>
                             <dd class="col-sm-9">{{ detail.type }}</dd>
-                            <dt class="col-sm-3">Audio</dt>
-                            <dd class="col-sm-9">
-                              <audio :src="detail.audio" controls></audio>
-                            </dd>
                             <dt class="col-sm-3 text-truncate">Keterangan</dt>
                             <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
                               <span v-html="detail.keterangan"></span>
