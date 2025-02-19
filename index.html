@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="Description" content="Al-Qur'an Online Dengan Terjemahan Bahasa Indonesia">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" 
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" 
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <title>Al-Qur'an</title>
+    
+    <!-- CSS untuk animasi loading manual dan dark/light mode -->
+    <style>
+      /* Animasi spinner manual */
+      .spinner {
+        width: 100px;
+        height: 100px;
+        border: 12px solid #f3f3f3;
+        border-top: 12px solid #28a745; /* Warna hijau sesuai tema */
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Default (light) theme */
+      body {
+        background-color: #fff;
+        color: #212529;
+      }
+      .card, .modal-content {
+        background-color: #fff;
+        color: #212529;
+      }
+      /* DataTables untuk light mode */
+      table.dataTable thead th {
+        background-color: #e9ecef;
+        color: #212529;
+      }
+
+      /* Agar tabel tidak scroll ke samping, kita pakai table-layout fixed + wrap teks */
+      table.dataTable {
+        width: 100% !important;
+        table-layout: auto !important;  /* paksa lebar kolom mengikuti lebar tabel */
+        word-wrap: break-word;           /* bungkus kata */
+      }
+      table.dataTable th, 
+      table.dataTable td {
+        white-space: normal !important;  /* izinkan teks multi-baris */
+      }
+
+      /*
+        DARK MODE
+        Override warna agar tidak terjadi perbedaan latar belakang yang berantakan.
+      */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #e9ecef;
+        }
+        .navbar {
+          background-color: #1c7c54 !important;
+        }
+        .card, .modal-content {
+          background-color: #1e1e1e !important;
+          color: #e9ecef !important;
+        }
+        .card-header, .modal-header {
+          background-color: #343a40 !important;
+          color: #e9ecef !important;
+        }
+        .bg-success {
+          background-color: #1c7c54 !important;
+        }
+        
+        /* Header tabel */
+        table.dataTable thead th {
+          background-color: #343a40 !important;
+          color: #e9ecef !important;
+        }
+
+        /* Tabel body */
+        table.dataTable tbody tr {
+          background-color: #1e1e1e !important; 
+          color: #e9ecef !important;
+        }
+
+        /* Warna hover baris tabel */
+        table.dataTable tbody tr:hover {
+          background-color: #333333 !important;
+        }
+
+        /* background nomor jadi gelap saat darkmode */
+        table.dataTable tbody tr td:first-child {
+          background-color: #1e1e1e !important;
+        }
+
+        /* tulisan di kolom input search dan show entries menjadi terang */
+        .dataTables_wrapper .dataTables_filter input,
+        .dataTables_wrapper .dataTables_length select {
+          color: #e9ecef !important;
+        }
+
+        /* Style untuk paging, search info, dsb. */
+        .dataTables_wrapper .dataTables_filter label,
+        .dataTables_wrapper .dataTables_length label,
+        .dataTables_wrapper .dataTables_info {
+          color: #e9ecef !important;
+        }
+        /* Tombol paging */
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+          color: #e9ecef !important;
+          background-color: #1e1e1e !important;
+          border: 1px solid #3a3a3a !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+          background-color: #343a40 !important;
+          border-color: #1e1e1e !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+      
+    <div id="app">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand" href="index.html">Al-Qur'an</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" 
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card my-5 border-0 shadow">
+              <div class="card-header bg-success text-light">
+                Daftar Surah
+              </div>
+              <div class="card-body">
+                <!-- Animasi loading manual -->
+                <div v-if="loading" class="d-flex justify-content-center">
+                  <div class="spinner"></div>
+                </div>
+                <!-- Hilangkan "table-responsive" agar tidak ada scroll horizontal -->
+                <div v-else>
+                  <table class="display table" style="width:100%" id="list">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Surah</th>
+                        <th>Arti</th>
+                        <th>Jumlah Ayat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Kolom pertama dikosongkan agar DataTables yang mengisinya -->
+                      <tr v-for="data in table" :key="data.nomor">
+                        <td></td> 
+                        <td>
+                          <a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" 
+                             v-on:click="getDetail(data.nomor - 1)"> 
+                            {{ data.asma }}<br>
+                            {{ data.nama }}
+                          </a>
+                        </td>
+                        <td>{{ data.arti }}</td>
+                        <td>{{ data.ayat }}</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+                </div>
+              </div>
+            </div>
+            
+            <!-- Modal Detail -->
+            <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-xl">
+                <div class="modal-content border border-success">
+                  <div class="modal-header bg-success text-light">
+                    <h5 class="modal-title" id="detailModalLabel">Surat {{ detail.nama }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Loading manual di modal -->
+                    <div v-if="loading2" class="d-flex justify-content-center">
+                      <div class="spinner"></div>
+                    </div>
+                    <div v-else>
+                      <div class="row p-1">
+                        <div class="col-lg-6">
+                          <dl class="row">
+                            <dt class="col-sm-3">Nama</dt>
+                            <dd class="col-sm-9">
+                              {{ detail.asma }}<br>
+                              {{ detail.nama }}
+                            </dd>
+                            <dt class="col-sm-3">Arti</dt>
+                            <dd class="col-sm-9">{{ detail.arti }}</dd>
+                            <dt class="col-sm-3">Diturunkan di</dt>
+                            <dd class="col-sm-9">{{ detail.type }}</dd>
+                            <dt class="col-sm-3">Audio</dt>
+                            <dd class="col-sm-9">
+                              <audio :src="detail.audio" controls></audio>
+                            </dd>
+                            <dt class="col-sm-3 text-truncate">Keterangan</dt>
+                            <dd class="col-sm-9 border border-secondary" style="max-height: 250px;overflow-y: scroll;">
+                              <span v-html="detail.keterangan"></span>
+                            </dd>
+                          </dl>
+                        </div>
+                        <div class="col-lg-6">
+                          <h3 class="h3 underline">Bacaan Surah {{ detail.nama }}</h3>
+                          <div class="border border-success p-3" style="max-height: 450px;overflow-y: scroll;">
+                            <span v-for="(ayat, index) in ayats" :key="index">
+                              <p>
+                                <span class="badge badge-pill badge-success">
+                                  {{ detail.nomor }}:{{ ayat.nomor }}
+                                </span>
+                                <p class="text-right">{{ ayat.ar }}</p>
+                              </p>
+                              <small v-html="ayat.tr"></small><br>
+                              <small class="text-left font-italic">{{ ayat.id }}</small>
+                              <hr>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Modal -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- jQuery, DataTables, Popper, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" 
+            crossorigin="anonymous"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" 
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Vue.js dan Vue Resource -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          table: [],
+          detail: [],
+          ayats: [],
+          loading: false,
+          loading2: false
+        },
+        methods: {
+          getDetail(index) {
+            this.loading2 = true;
+            this.$http.get('https://api.npoint.io/99c279bb173a6e28359c/data/' + index + '/')
+              .then(response => {
+                this.getSurah(response.body.nomor);
+                this.detail = response.body;
+              }, response => {
+                console.log('getDetail error ' + response);
+              });
+          },
+          getSurah(nomor) {
+            this.$http.get('https://api.npoint.io/99c279bb173a6e28359c/surat/' + nomor + '/')
+              .then(response => {
+                this.ayats = response.body;
+                this.loading2 = false;
+              }, response => {
+                console.log('getAyat error ' + response);
+              });
+          }
+        },
+        mounted() {
+          this.loading = true;
+          this.$http.get('https://api.npoint.io/99c279bb173a6e28359c/data/')
+            .then(response => {
+              this.table = response.body;
+              this.loading = false;
+              this.$nextTick(function() {
+                // Inisialisasi DataTables tanpa extension Responsive 
+                // agar tidak ada tombol "expand" atau scroll horizontal
+                $('#list').DataTable({
+                  paging: true,
+                  searching: true,
+                  info: true,
+                  // Kolom pertama "No" diisi nomor baris
+                  columnDefs: [
+                    {
+                      targets: 0,
+                      searchable: false,
+                      orderable: false,
+                      data: null,
+                      render: function (data, type, row, meta) {
+                        return meta.row + 1; 
+                      }
+                    }
+                  ]
+                });
+              });
+            }, response => {
+              console.log('error ' + response);
+            });
+        },
+      });
+    </script>
+  </body>
+</html>
