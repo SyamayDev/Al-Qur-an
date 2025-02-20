@@ -152,13 +152,13 @@
       background: #dcdcdc;
       border: 1px solid #e0e0e0;
       border-radius: 10px;
-      padding: 5px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 8px 3px;
     }
     .audio-player button {
       border: none;
       background: none;
-      font-size: 1.5rem;
+      font-size: 0.8rem;
       margin-right: 10px;
       cursor: pointer;
       transition: color 0.2s;
@@ -395,7 +395,7 @@
                           <dt class="col-sm-3">Diturunkan di</dt>
                           <dd class="col-sm-9">{{ detail.type }}</dd>
                           <dt class="col-sm-3">Audio Surah</dt>
-                          <dd class="col-sm-9">
+                          <dd style="margin-left: 10px;">
                             <div class="audio-player" v-if="surahAudio">
                               <button @click="rewindSurahAudio"><i class="fas fa-backward"></i></button>
                               <button @click="toggleSurahAudio">
