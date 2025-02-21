@@ -41,278 +41,280 @@
   <title>Al-Qur'an</title>
 
   <style>
-    /* ---------------------------------------------------------
-       1. SPINNER LOADING
-    --------------------------------------------------------- */
-    .spinner {
-      width: 100px;
-      height: 100px;
-      border: 12px solid #f3f3f3;
-      border-top: 12px solid #28a745;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0%   { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+
+    /* dataTables tidak keluar dari card body saat di mobile */
+    .card-body {
+      overflow-x: auto;
     }
 
-    /* ---------------------------------------------------------
-       2. ANIMASI CENTANG (COPY)
-    --------------------------------------------------------- */
-    @keyframes fadeInOut {
-      0%   { opacity: 0; transform: scale(0.5); }
-      50%  { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0; transform: scale(0.5); }
-    }
-    .copied-check {
-      animation: fadeInOut 1s ease-out;
-    }
+/* ===========================================
+   ============== LIGHT MODE =================
+   =========================================== */
 
-    /* ---------------------------------------------------------
-       3. LAYOUT UMUM
-    --------------------------------------------------------- */
+/* Global Base & Navbar */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #212529;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .navbar-brand {
+    font-size: 40px;
+    font-family: 'Amiri', serif;
+    color: #fff9d6;
+    font-weight: bold;
+    line-height: 1em;
+    text-shadow: 0 0 0 rgb(215,215,215),
+                 1px 1px 0 rgb(184,184,184),
+                 2px 2px 0 rgb(154,154,154),
+                 3px 3px 0 rgb(124,124,124),
+                 4px 4px 0 rgb(93,93,93),
+                 5px 5px 0 rgb(63,63,63),
+                 6px 6px 0 rgb(33,33,33),
+                 7px 7px 6px rgba(0,0,0,0.3),
+                 7px 7px 1px rgba(0,0,0,0.5),
+                 0 0 6px rgba(0,0,0,.2);
+  }
+  
+  /* Spinner & Animations */
+  .spinner {
+    width: 100px;
+    height: 100px;
+    border: 12px solid #f3f3f3;
+    border-top: 12px solid #28a745;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(0.5); }
+  }
+  .copied-check { animation: fadeInOut 1s ease-out; }
+  
+  /* Card & Modal */
+  .card, .modal-content {
+    border-radius: 10px;
+    transition: box-shadow 0.3s;
+  }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .card-header, .modal-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .my-card-header { background-color: #28a745; color: #fff; }
+  .my-modal-header { background-color: #28a745; color: #fff; }
+  .my-modal-content { border: 1px solid #28a745; }
+  
+  /* DataTables */
+  table.dataTable {
+    width: 100% !important;
+    table-layout: auto !important;
+    white-space: normal !important;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  table.dataTable thead th {
+    background-color: #e9ecef;
+    color: #212529;
+    border-bottom: 2px solid #dee2e6;
+    padding: 0.5rem;
+    white-space: nowrap; /* Mencegah header meluber */
+  }
+  table.dataTable tbody td {
+    padding: 0.5rem;
+    word-wrap: break-word; /* Membuat teks patah baris jika terlalu panjang */
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Menambahkan tanda "..." jika teks terlalu panjang */
+  }
+  table.dataTable tbody tr:hover { background-color: #f8f9fa; }
+
+  /* Mengurangi jarak antara alert dan tabel */
+  .alert-info {
+    margin-bottom: -10px !important;
+  }
+  
+  /* Teks Arab & Khusus Al-Fatihah */
+  .arabic-text {
+    font-family: 'Lateef', serif;
+    direction: rtl;
+    text-align: right;
+    font-size: 3rem;
+    line-height: 1.8;
+  }
+  .alfatihah-text {
+    font-family: 'Lateef', serif;
+    font-size: 3.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+  .underline { text-decoration: underline; }
+  
+  /* Audio Player */
+  .audio-player {
+    display: flex;
+    align-items: center;
+    background: #dcdcdc;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 8px 3px;
+    transition: background 0.3s;
+  }
+  .audio-player:hover { background: rgba(40,167,69,0.15); }
+  .audio-player button {
+    border: none;
+    background: none;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .audio-player button:hover { color: #28a745; }
+  .audio-player input[type=range] {
+    flex: 1;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .fa-star.text-warning {
+    color: #ffc107 !important;
+    text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+  }
+  
+  /* Efek hover untuk tombol toggle */
+  .btn-outline-light:hover .fa-star {
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+  }
+  /* ===========================================
+     ============== DARK MODE ====================
+     =========================================== */
+  @media (prefers-color-scheme: dark) {
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      color: #212529;
-      font-family: 'Roboto', sans-serif;
-      transition: background-color 0.3s, color 0.3s;
+      background-color: #121212 !important;
+      color: #e9ecef !important;
     }
-    .navbar-brand {
-      font-size: 2rem;
-      font-weight: 700;
+    .navbar {
+      background: linear-gradient(45deg, #1c7c54, #145f3f) !important;
+      border-bottom: 2px solid #145f3f !important;
     }
-    .card {
-      border-radius: 10px;
-      transition: box-shadow 0.3s;
+    .card, .modal-content {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
     }
-    .card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .card-header, .modal-header {
+      background-color: #343a40 !important;
+      color: #e9ecef !important;
     }
-    .card-header {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+    .my-modal-content { border: 1px solid #666 !important; }
+    .card:hover { box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important; }
+    
+    /* DataTables Overrides */
+    table.dataTable thead th,
+    table.dataTable thead th.sorting,
+    table.dataTable thead th.sorting_asc,
+    table.dataTable thead th.sorting_desc,
+    table.dataTable thead th.sorting_asc_disabled,
+    table.dataTable thead th.sorting_desc_disabled {
+      background-color: #343a40 !important;
+      color: #e9ecef !important;
     }
-    .modal-content {
-      border-radius: 10px;
-    }
-    .modal-header {
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
+                    /* Aturan untuk baris yang sedang disorot (sorting_1) */
+                table.dataTable.display tbody tr.even > .sorting_1, 
+                table.dataTable.order-column.stripe tbody tr.even > .sorting_1,
+                table.dataTable.display tbody tr.odd > .sorting_1, 
+                table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
+                  background-color: #1e1e1e !important;
+                  color: #e9ecef !important;
+                }
 
-    /* ---------------------------------------------------------
-       4. TABLE / DATATABLE
-    --------------------------------------------------------- */
-    table.dataTable {
-      width: 100% !important;
-      table-layout: auto !important;
-      white-space: normal !important;
-      border-radius: 8px;
-      overflow: hidden;
+    table.dataTable tbody tr {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
     }
-    table.dataTable thead th {
-      background-color: #e9ecef;
-      color: #212529;
-      border-bottom: 2px solid #dee2e6;
+    table.dataTable tbody tr:hover { background-color: #333333 !important; }
+    table.dataTable tbody tr td:first-child { background-color: #1e1e1e !important; }
+    .dataTables_wrapper .dataTables_filter input,
+    .dataTables_wrapper .dataTables_length select {
+      color: #e9ecef !important;
+      background-color: #1e1e1e !important;
     }
-    table.dataTable tbody tr:hover {
-      background-color: #f8f9fa;
+    .dataTables_wrapper .dataTables_filter label,
+    .dataTables_wrapper .dataTables_length label,
+    .dataTables_wrapper .dataTables_info { color: #e9ecef !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      color: #e9ecef !important;
+      background-color: #1e1e1e !important;
+      border: 1px solid #3a3a3a !important;
     }
-    table.dataTable thead th, table.dataTable tbody td {
-      padding: 0.5rem;
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background-color: #343a40 !important;
+      border-color: #1e1e1e !important;
     }
-
-    /* ---------------------------------------------------------
-       5. TEKS ARAB & KHUSUS AL-FATIHAH
-    --------------------------------------------------------- */
-    .arabic-text {
-      font-family: 'Lateef', serif;
-      direction: rtl;
-      text-align: right;
-      font-size: 3rem;
-      line-height: 1.8;
+    
+    /* Select2 Overrides */
+    .select2-container--default .select2-selection--single {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+      border: 1px solid #666 !important;
     }
-    .alfatihah-text {
-      font-family: 'Lateef', serif;
-      font-size: 3.5rem;
-      color: white;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    .select2-container--default .select2-selection__rendered { color: #e9ecef !important; }
+    .select2-container--default .select2-results__option--selectable {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
     }
-
-    /* ---------------------------------------------------------
-       6. CUSTOM AUDIO PLAYER
-    --------------------------------------------------------- */
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+      background-color: #333 !important;
+      color: #e9ecef !important;
+    }
+    .select2-container--default .select2-results__message {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+    }
+    
+    /* Dropdown & Audio Player */
+    .dropdown-menu.show { background-color: #1e1e1e !important; }
+    .dropdown-item { color: #e9ecef !important; }
+    .dropdown-item:hover { background-color: #333 !important; }
     .audio-player {
-      display: flex;
-      align-items: center;
-      background: #dcdcdc;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      padding: 8px 3px;
+      background: #333 !important;
+      border: 1px solid #444 !important;
     }
-    .audio-player button {
-      border: none;
-      background: none;
-      font-size: 0.8rem;
-      margin-right: 10px;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .audio-player button:hover {
-      color: #28a745;
-    }
-    .audio-player input[type=range] {
-      flex: 1;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-
-    /* ---------------------------------------------------------
-       7. CARD & MODAL HEADER KHUSUS
-    --------------------------------------------------------- */
-    .my-card-header {
-      background-color: #28a745;
-      color: #fff;
-    }
-    .my-modal-header {
-      background-color: #28a745;
-      color: #fff;
-    }
-    .my-modal-content {
-      border: 1px solid #28a745;
-    }
-
-    /* ---------------------------------------------------------
-       8. DARK MODE
-       (aktif otomatis jika OS user preferensi "dark mode")
-    --------------------------------------------------------- */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #121212 !important;
-        color: #e9ecef !important;
+    .audio-player button { color: #e9ecef !important; }
+    .audio-player button:hover { color: #80ffa7 !important; }
+    
+    /* Mobile Adjustments */
+    @media (max-width: 767px) {
+      .navbar { background-color: #1e1e1e !important; }
+      .navbar-brand,
+      .navbar-toggler,
+      .navbar-nav .nav-link { color: #e9ecef !important; }
+      
+      /* Aturan tambahan untuk tabel pada layar kecil */
+      table.dataTable {
+        font-size: 0.8rem; /* Mengurangi ukuran font pada layar kecil */
       }
-      .navbar {
-        /* Gradasi hijau lebih gelap untuk navbar */
-        background: linear-gradient(45deg, #1c7c54, #145f3f) !important;
-        border-bottom: 2px solid #145f3f !important;
-      }
-      .card, .modal-content {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-      }
-      .card-header, .modal-header {
-        background-color: #343a40 !important;
-        color: #e9ecef !important;
-      }
-      .my-modal-content {
-        border: 1px solid #666 !important;
-      }
-      .card:hover {
-        box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important;
-      }
-
-      /* Tabel DataTables */
-      table.dataTable thead th {
-        background-color: #343a40 !important;
-        color: #e9ecef !important;
-      }
-      table.dataTable thead th.sorting,
-      table.dataTable thead th.sorting_asc,
-      table.dataTable thead th.sorting_desc,
-      table.dataTable thead th.sorting_asc_disabled,
-      table.dataTable thead th.sorting_desc_disabled {
-        background-color: #343a40 !important;
-        color: #e9ecef !important;
-      }
-      table.dataTable tbody tr {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-      }
-      table.dataTable tbody tr:hover {
-        background-color: #333333 !important;
-      }
-      table.dataTable tbody tr td:first-child {
-        background-color: #1e1e1e !important;
-      }
-      .dataTables_wrapper .dataTables_filter input,
-      .dataTables_wrapper .dataTables_length select {
-        color: #e9ecef !important;
-        background-color: #1e1e1e !important;
-      }
-      .dataTables_wrapper .dataTables_filter label,
-      .dataTables_wrapper .dataTables_length label,
-      .dataTables_wrapper .dataTables_info {
-        color: #e9ecef !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button {
-        color: #e9ecef !important;
-        background-color: #1e1e1e !important;
-        border: 1px solid #3a3a3a !important;
-      }
-      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background-color: #343a40 !important;
-        border-color: #1e1e1e !important;
-      }
-
-      /* Select2 di dark mode */
-      .select2-container--default .select2-selection--single {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-        border: 1px solid #666 !important;
-      }
-      .select2-container--default .select2-selection__rendered {
-        color: #e9ecef !important;
-      }
-      .select2-container--default .select2-results__option--selectable {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-      }
-      .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: #333 !important;
-        color: #e9ecef !important;
-      }
-      .select2-container--default .select2-results__message {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-      }
-      .select2-container--default .select2-search--dropdown .select2-search__field {
-        background-color: #1e1e1e !important;
-        color: #e9ecef !important;
-      }
-
-      /* Dropdown menu & audio-player di dark mode */
-      .dropdown-menu.show {
-        background-color: #1e1e1e !important;
-      }
-      .dropdown-item {
-        color: #e9ecef !important;
-      }
-      .dropdown-item:hover {
-        background-color: #333 !important;
-      }
-      .audio-player {
-        background: #333 !important;
-        border: 1px solid #444 !important;
-      }
-      .audio-player button {
-        color: #e9ecef !important;
-      }
-      .audio-player button:hover {
-        color: #80ffa7 !important; /* sedikit lebih terang saat hover */
+      table.dataTable tbody td {
+        max-width: 100px; /* Batasi lebar maksimum sel pada layar kecil */
       }
     }
-
-    /* ---------------------------------------------------------
-       9. GARIS BAWAH UNTUK JUDUL
-    --------------------------------------------------------- */
-    .underline {
-      text-decoration: underline;
-    }
+    
+    /* Icon Override */
+    .far.fa-star { color: #e9ecef !important; }
+  }  
   </style>
 </head>
 <body>
@@ -322,16 +324,28 @@
       <a class="navbar-brand" href="#">Al-Qur'an Digital</a>
     </nav>
     
-    <div class="container">
+    <div class="container mt-3">
+      <!-- Penanda Terakhir Baca (Bookmark Ayat Terakhir) -->
+      <div v-if="lastRead" class="alert alert-info" role="alert" style="cursor:pointer;" @click="goToLastRead">
+        Terakhir Baca: Surat {{ lastRead.surahName }} - Ayat {{ lastRead.ayatNumber }}
+        <button type="button" class="close" @click.stop="clearLastRead"><span>×</span></button>
+      </div>
+      
       <div class="row">
         <div class="col-lg-12">
-          <!-- Daftar Surah -->
+          <!-- Card Daftar Surah dengan tombol Refresh dan Toggle Favorit -->
           <div class="card my-5 border-0 shadow">
             <div class="card-header my-card-header d-flex justify-content-between align-items-center">
               <span>Daftar Surah</span>
-              <button class="btn btn-outline-light btn-sm" @click="refreshPage" title="Refresh">
-                <i class="fas fa-sync-alt"></i>
-              </button>
+              <div>
+                <!-- Tombol untuk toggle tampilkan surah favorit -->
+                <button class="btn btn-outline-light btn-sm mr-2" @click="toggleShowFavorites" title="Tampilkan Surah Favorit">
+                  <i :class="{'fas fa-star text-warning': showFavorites, 'far fa-star': !showFavorites}"></i>
+                </button>
+                <button class="btn btn-outline-light btn-sm" @click="refreshPage" title="Refresh">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+              </div>
             </div>
             <div class="card-body">
               <div v-if="loading" class="d-flex justify-content-center">
@@ -344,20 +358,26 @@
                       <th>No</th>
                       <th>Nama Surah</th>
                       <th>Arti</th>
-                      <th>Jumlah Ayat</th>
+                      <th>Total Ayat</th>
+                      <th>Favorit</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(data, idx) in table" :key="idx">
+                    <!-- Iterasi berdasarkan filteredSurahs -->
+                    <tr v-for="(data, idx) in currentSurahList" :key="data.nomor">
                       <td>{{ idx + 1 }}</td>
                       <td>
-                        <a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" 
-                           @click="getDetail(data.nomor)">
+                        <a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" @click="getDetail(data.nomor)">
                           {{ data.nama_latin }}<br>{{ data.nama }}
                         </a>
                       </td>
                       <td>{{ data.arti }}</td>
                       <td>{{ data.jumlah_ayat }}</td>
+                      <td>
+                        <button class="btn btn-sm" @click="toggleSurahBookmark(data)">
+                          <i :class="{'fas fa-star text-warning': isSurahBookmarked(data.nomor), 'far fa-star': !isSurahBookmarked(data.nomor)}"></i>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -365,7 +385,7 @@
             </div>
           </div>
           
-          <!-- Modal Detail -->
+          <!-- Modal Detail Surah -->
           <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
               <div class="modal-content my-modal-content">
@@ -374,7 +394,7 @@
                     Surat <span :class="{'alfatihah-text': detail.nomor == 1}">{{ detail.asma }}</span>
                   </h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">×</span>
                   </button>
                 </div>
                 <div class="modal-body">
@@ -383,7 +403,7 @@
                   </div>
                   <div v-else>
                     <div class="row p-1">
-                      <!-- Panel Metadata Surah & Audio Surah -->
+                      <!-- Panel Metadata & Audio Surah -->
                       <div class="col-lg-6">
                         <dl class="row">
                           <dt class="col-sm-3">Nama</dt>
@@ -420,18 +440,15 @@
                       <!-- Panel Bacaan Surat -->
                       <div class="col-lg-6">
                         <h3 class="underline">Bacaan Surat {{ detail.asma }}</h3>
-                        
-                        <!-- Tampilkan Bismillah (kecuali Al-Fatihah tetap pakai style "alfatihah-text" di judul) -->
+                        <!-- Tampilkan Bismillah kecuali surah 1 -->
                         <div v-if="detail.nomor !== 1" class="text-center mb-3" style="font-family: 'Lateef', serif; font-size: 2rem; color: #28a745;">
                           بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                         </div>
-                        
                         <!-- Select2 untuk lompat ke ayat -->
                         <div class="mb-3">
                           <select id="ayatSelect" style="width: 100%;"></select>
                         </div>
-                        
-                        <!-- Daftar Ayat -->
+                        <!-- Daftar Ayat dengan Tombol Bookmark -->
                         <div class="border border-success p-3" style="max-height: 450px; overflow-y: scroll; border-radius: 8px;">
                           <span v-for="(ayat, idx) in ayats" :key="ayat.nomor" :id="'ayat-' + ayat.nomor">
                             <p>
@@ -456,6 +473,10 @@
                                 <i v-else class="fas fa-play"></i>
                                 <span v-if="currentAudioIndex === idx && isPlaying"> Stop</span>
                                 <span v-else> Play</span>
+                              </button>
+                              <!-- Tombol Bookmark Ayat (Terakhir Baca) -->
+                              <button class="btn btn-sm btn-outline-info ml-2" @click="toggleAyatBookmark(ayat)">
+                                <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
                               </button>
                               <!-- Tombol Share -->
                               <div class="btn-group ml-2">
@@ -482,7 +503,10 @@
                     </div><!-- End row -->
                   </div>
                 </div>
+                <!-- Modal Footer dengan Navigasi Surah -->
                 <div class="modal-footer">
+                  <button type="button" class="btn btn-success" @click="prevSurah" :disabled="!hasPrev"><i class="fas fa-arrow-left"></i></button>
+                  <button type="button" class="btn btn-success" @click="nextSurah" :disabled="!hasNext"><i class="fas fa-arrow-right"></i></button>
                   <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Close</button>
                 </div>
               </div>
@@ -529,81 +553,89 @@
     var app = new Vue({
       el: '#app',
       data: {
-        table: [],                 // Daftar surah (dari equran.id)
-        detail: {},                // Detail surah terpilih
-        ayats: [],                 // Data ayat dari properti "ayat" di detail
+        allSurahs: [],
+        detail: {},
+        ayats: [],
         loading: false,
         loading2: false,
-        audioUrl: '',              // URL audio surah penuh
+        audioUrl: '',
         surahAudio: null,
         surahAudioPlaying: false,
         surahAudioCurrent: 0,
         surahAudioDuration: 0,
-        currentAudio: null,        // Objek Audio per ayat
+        currentAudio: null,
         currentAudioIndex: null,
         isPlaying: false,
-        copiedAyats: {}
+        copiedAyats: {},
+        lastRead: null,
+        bookmarkedSurahs: {}, // Objek untuk menyimpan surah yang dibintangi
+        showFavorites: false,
+        dataTable: null,
+        previousPage: 0 // Menyimpan halaman sebelumnya
+      },
+      computed: {
+        currentSurahList() {
+          return this.showFavorites ? this.allSurahs.filter(s => this.isSurahBookmarked(s.nomor)) : this.allSurahs;
+        },
+        currentIndex() {
+          if (!this.detail.nomor) return -1;
+          return this.currentSurahList.findIndex(s => s.nomor == this.detail.nomor);
+        },
+        hasPrev() {
+          return this.currentIndex > 0;
+        },
+        hasNext() {
+          return this.currentIndex >= 0 && this.currentIndex < this.currentSurahList.length - 1;
+        }
       },
       methods: {
         refreshPage() {
           window.location.reload();
         },
-        // Fungsi pembantu untuk zero-padding (misal: 1 menjadi "001")
         padNumber(num, digits) {
           return num.toString().padStart(digits, '0');
         },
-        // Ambil detail surah + data ayat
         getDetail(nomorSurah) {
           this.loading2 = true;
-          this.$http.get(`https://equran.id/api/surat/${nomorSurah}`)
-            .then(response => {
-              let res = response.body;
-              // Set detail surah
-              this.detail = {
-                nomor:       res.nomor,
-                nama:        res.nama,        // Teks Arab
-                asma:        res.nama_latin,  // Nama Latin
-                arti:        res.arti,
-                type:        res.tempat_turun,
-                keterangan:  res.deskripsi || ""
+          this.$http.get(`https://equran.id/api/surat/${nomorSurah}`).then(response => {
+            let res = response.body;
+            this.detail = {
+              nomor: res.nomor,
+              nama: res.nama,
+              asma: res.nama_latin,
+              arti: res.arti,
+              type: res.tempat_turun,
+              keterangan: res.deskripsi || ""
+            };
+            let rawAyats = res.ayat || [];
+            this.ayats = rawAyats.map(a => {
+              let primaryAudio = `https://cdn.islamic.network/quran/audio/128/ar.abdulbasit/${this.padNumber(nomorSurah, 3)}_${this.padNumber(a.nomor, 3)}.mp3`;
+              let fallbackAudio = `https://everyayah.com/data/Abdul_Basit_Mujawwad_128kbps/${this.padNumber(nomorSurah, 3)}${this.padNumber(a.nomor, 3)}.mp3`;
+              return {
+                nomor: a.nomor,
+                ar: a.ar,
+                tr: a.tr,
+                id: a.idn,
+                audio: primaryAudio,
+                fallbackAudio: fallbackAudio
               };
-              // Mapping data ayat (properti "ayat" di respons equran.id)
-              let rawAyats = res.ayat || [];
-              this.ayats = rawAyats.map(a => {
-                // URL audio utama (menggunakan cdn.islamic.network)
-                let primaryAudio = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${this.padNumber(nomorSurah, 3)}_${this.padNumber(a.nomor, 3)}.mp3`;
-                // Fallback audio (opsional)
-                let fallbackAudio = `https://everyayah.com/data/Abdul_Basit_Mujawwad_128kbps/${this.padNumber(nomorSurah, 3)}${this.padNumber(a.nomor, 3)}.mp3`;
-                return {
-                  nomor: a.nomor,
-                  ar: a.ar,
-                  tr: a.tr,
-                  id: a.idn,  // Terjemahan Bahasa Indonesia
-                  audio: primaryAudio,
-                  fallbackAudio: fallbackAudio
-                };
-              });
-              // Susun URL audio surah penuh
-              this.getAudioSurah(nomorSurah);
-              this.initSurahAudio();
-              this.loading2 = false;
-              this.$nextTick(() => {
-                this.initSelect2();
-              });
-            })
-            .catch(err => {
-              console.error('getDetail error', err);
-              this.loading2 = false;
             });
+            this.getAudioSurah(nomorSurah);
+            this.initSurahAudio();
+            this.loading2 = false;
+            this.$nextTick(() => {
+              this.initSelect2();
+            });
+          }).catch(err => {
+            console.error('getDetail error', err);
+            this.loading2 = false;
+          });
         },
-        // URL audio surah full
         getAudioSurah(nomor) {
           this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomor}.mp3`;
         },
         initSurahAudio() {
-          if (this.surahAudio) {
-            this.surahAudio.pause();
-          }
+          if (this.surahAudio) { this.surahAudio.pause(); }
           this.surahAudio = new Audio(this.audioUrl);
           this.surahAudio.addEventListener('loadedmetadata', () => {
             this.surahAudioDuration = this.surahAudio.duration;
@@ -644,11 +676,8 @@
           let s = Math.floor(sec % 60);
           return `${m}:${s < 10 ? '0' : ''}${s}`;
         },
-
-        // Pemutaran audio ayat per ayat
         togglePlay(item, idx) {
           if (this.currentAudio && this.currentAudioIndex === idx) {
-            // Sudah diputar, maka toggle play/pause
             if (this.isPlaying) {
               this.currentAudio.pause();
               this.isPlaying = false;
@@ -657,15 +686,11 @@
               this.isPlaying = true;
             }
           } else {
-            // Jika ganti ayat
-            if (this.currentAudio) {
-              this.currentAudio.pause();
-            }
+            if (this.currentAudio) { this.currentAudio.pause(); }
             if (item.audio) {
               this.currentAudio = new Audio(item.audio);
               this.currentAudioIndex = idx;
               this.isPlaying = true;
-              // Error? Coba fallback
               this.currentAudio.onerror = () => {
                 console.error("Primary audio failed for ayat", item.nomor, ", trying fallback audio.");
                 if (item.fallbackAudio) {
@@ -674,7 +699,6 @@
                   this.currentAudio.play().catch(err => console.error("Fallback audio also failed:", err));
                 }
               };
-              // Setelah satu ayat selesai, auto lanjut ke ayat berikutnya
               this.currentAudio.onended = () => {
                 let nextIdx = idx + 1;
                 if (nextIdx < this.ayats.length && this.ayats[nextIdx].audio) {
@@ -687,16 +711,12 @@
                   this.currentAudioIndex = null;
                 }
               };
-              // Play
               this.currentAudio.play();
-              // Scroll ke ayat
               let t = document.getElementById(`ayat-${idx+1}`);
               if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
             }
           }
         },
-
-        // Copy ayat
         copyAyat(idx, item) {
           let text = `Ayat ${idx}\nArab: ${item.ar}\nLatin: ${item.tr}\nTerjemahan: ${item.id}`;
           if (navigator.clipboard) {
@@ -707,7 +727,6 @@
               })
               .catch(err => console.error("Gagal menyalin:", err));
           } else {
-            // Fallback method
             let ta = document.createElement("textarea");
             ta.value = text;
             document.body.appendChild(ta);
@@ -722,20 +741,17 @@
             document.body.removeChild(ta);
           }
         },
-
-        // Share ayat
         shareAyat(platform, item) {
           let text = `${item.ar}\n\n${item.id}\n\n(Dibagikan dari aplikasi Al-Qur'an)`;
           if (platform === 'whatsapp') {
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
           } else if (platform === 'facebook') {
             let url = 'https://example.com';
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, '_blank');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(text)}`, '_blank');
           } else if (platform === 'instagram') {
             window.open('https://instagram.com/', '_blank');
           }
         },
-
         initSelect2() {
           let options = this.ayats.map(a => {
             return { 
@@ -755,37 +771,134 @@
               if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
             }
           });
+        },
+        isAyatBookmarked(surahNumber, ayatNumber) {
+          return this.lastRead &&
+                 this.lastRead.surahNumber === surahNumber &&
+                 this.lastRead.ayatNumber === ayatNumber;
+        },
+        toggleAyatBookmark(ayat) {
+          if (this.isAyatBookmarked(this.detail.nomor, ayat.nomor)) {
+            this.lastRead = null;
+          } else {
+            this.lastRead = {
+              surahNumber: this.detail.nomor,
+              surahName: this.detail.asma,
+              ayatNumber: ayat.nomor,
+              ar: ayat.ar,
+              tr: ayat.tr,
+              id: ayat.id
+            };
+          }
+        },
+        goToLastRead() {
+          if (this.lastRead) {
+            this.getDetail(this.lastRead.surahNumber);
+            $('#detailModal').modal('show');
+            this.$nextTick(() => {
+              setTimeout(() => {
+                let t = document.getElementById(`ayat-${this.lastRead.ayatNumber}`);
+                if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+              }, 500);
+            });
+          }
+        },
+        clearLastRead() {
+          this.lastRead = null;
+        },
+        isSurahBookmarked(surahNumber) {
+          return !!this.bookmarkedSurahs[surahNumber];
+        },
+        toggleSurahBookmark(surah) {
+          let currentPage = this.dataTable ? this.dataTable.page() : 0;
+          if (this.isSurahBookmarked(surah.nomor)) {
+            this.$delete(this.bookmarkedSurahs, surah.nomor);
+            surah.isFavorite = false;
+          } else {
+            this.$set(this.bookmarkedSurahs, surah.nomor, surah);
+            surah.isFavorite = true;
+          }
+          if (this.dataTable) {
+            this.dataTable.rows().invalidate();
+            if (this.showFavorites) {
+              this.dataTable.column(5).search('true').draw();
+            } else {
+              this.dataTable.draw();
+            }
+            if (currentPage < this.dataTable.page.info().pages) {
+              this.dataTable.page(currentPage).draw('page');
+            }
+          }
+        },
+        toggleShowFavorites() {
+          if (this.dataTable) {
+            this.previousPage = this.dataTable.page();
+            this.showFavorites = !this.showFavorites;
+            if (this.showFavorites) {
+              this.dataTable.column(5).search('true').draw();
+            } else {
+              this.dataTable.column(5).search('').draw();
+              if (this.previousPage < this.dataTable.page.info().pages) {
+                this.dataTable.page(this.previousPage).draw('page');
+              }
+            }
+          }
+        },
+        prevSurah() {
+          if (this.hasPrev) {
+            let prevSurah = this.currentSurahList[this.currentIndex - 1];
+            this.getDetail(prevSurah.nomor);
+          }
+        },
+        nextSurah() {
+          if (this.hasNext) {
+            let nextSurah = this.currentSurahList[this.currentIndex + 1];
+            this.getDetail(nextSurah.nomor);
+          }
         }
       },
       mounted() {
         this.loading = true;
-        // Ambil daftar surah
         this.$http.get('https://equran.id/api/surat')
           .then(res => {
-            this.table = res.body;
+            this.allSurahs = res.body.map(surah => {
+              surah.isFavorite = this.isSurahBookmarked(surah.nomor);
+              return surah;
+            });
             this.loading = false;
             this.$nextTick(() => {
-              $('#list').DataTable({
+              this.dataTable = $('#list').DataTable({
                 paging: true,
                 searching: true,
                 info: true,
+                data: this.allSurahs,
+                columns: [
+                  { data: null, render: (data, type, row, meta) => meta.row + 1 },
+                  { 
+                    data: 'nama_latin', 
+                    render: (data, type, row) => {
+                      return `<a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" onclick="app.getDetail(${row.nomor})">${row.nama_latin}<br>${row.nama}</a>`;
+                    }
+                  },
+                  { data: 'arti' },
+                  { data: 'jumlah_ayat' },
+                  { 
+                    data: null, 
+                    render: (data, type, row) => {
+                      return `<button class="btn btn-sm" onclick="app.toggleSurahBookmark(app.allSurahs[${row.nomor - 1}])">
+                                <i class="${row.isFavorite ? 'fas fa-star text-warning' : 'far fa-star'}"></i>
+                              </button>`;
+                    }
+                  },
+                  { data: 'isFavorite', visible: false } // Kolom tersembunyi
+                ],
+                responsive: true, // Menambahkan responsivitas
                 language: {
                   paginate: {
                     previous: '<i class="fa fa-chevron-left"></i>',
                     next: '<i class="fa fa-chevron-right"></i>'
                   }
-                },
-                columnDefs: [
-                  {
-                    targets: 0,
-                    searchable: false,
-                    orderable: false,
-                    data: null,
-                    render: function(data, type, row, meta) {
-                      return meta.row + 1;
-                    }
-                  }
-                ]
+                }
               });
             });
           })
@@ -793,6 +906,21 @@
             console.log('error', err);
             this.loading = false;
           });
+    
+        $('#detailModal').on('hidden.bs.modal', () => {
+          if (this.surahAudio) {
+            this.surahAudio.pause();
+            this.surahAudio.currentTime = 0;
+            this.surahAudioPlaying = false;
+          }
+          if (this.currentAudio) {
+            this.currentAudio.pause();
+            this.currentAudio.currentTime = 0;
+            this.isPlaying = false;
+            this.currentAudio = null;
+            this.currentAudioIndex = null;
+          }
+        });
       }
     });
   </script>
