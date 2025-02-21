@@ -1,978 +1,973 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="Description" content="Al-Qur'an Online Dengan Terjemahan Bahasa Indonesia (equran.id + Audio Alafasy)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="Description" content="Al-Qur'an Online Dengan Terjemahan Bahasa Indonesia (equran.id + Audio Alafasy)">
 
-  <!-- Bootstrap CSS -->
-  <link 
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-    crossorigin="anonymous"
-  >
-  <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-  >
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
-    rel="stylesheet"
-  >
-  <!-- DataTables CSS -->
-  <link
-    href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
-    rel="stylesheet"
-  >
-  <!-- Select2 CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
-    rel="stylesheet"
-  >
-  <!-- Google Font untuk teks Arab (Lateef) -->
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Lateef&display=swap"
-  >
+    <!-- Bootstrap CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous"
+    >
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    >
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+        rel="stylesheet"
+    >
+    <!-- Select2 CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+        rel="stylesheet"
+    >
+    <!-- Google Font untuk teks Arab (Lateef) -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Lateef&display=swap"
+    >
 
-  <title>Al-Qur'an</title>
+    <title>Al-Qur'an</title>
 
-  <style>
+    <style>
+    /* ===========================================
+    ============== LIGHT MODE =================
+    =========================================== */
 
-/* Untuk tabel DataTables secara umum */
-table.dataTable {
-  width: 100% !important;
-  table-layout: auto !important;
-  white-space: normal !important;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Header tabel */
-table.dataTable thead th {
-  background-color: #e9ecef;
-  color: #212529;
-  border-bottom: 2px solid #dee2e6;
-  padding: 0.5rem;
-  white-space: nowrap; /* Mencegah header meluber */
-}
-
-/* Sel tubuh tabel */
-table.dataTable tbody td {
-  padding: 0.5rem;
-  word-break: break-word; /* Memastikan teks patah pada batas kata, bukan di tengah kata */
-  overflow-wrap: break-word; /* Alternatif untuk browser lama */
-  white-space: normal; /* Memastikan teks membungkus secara alami */
-  max-width: 0; /* Membiarkan lebar kolom menyesuaikan secara otomatis */
-}
-
-/* Spesifik untuk kolom "Arti" pada layar kecil (mobile) */
-@media (max-width: 767px) {
-  table.dataTable {
-    font-size: 0.8rem; /* Mengurangi ukuran font pada layar kecil */
-  }
-
-  table.dataTable tbody td {
-    padding: 0.3rem; /* Mengurangi padding pada layar kecil */
-    max-width: 150px; /* Batasi lebar maksimum sel untuk kolom "Arti" */
-  }
-
-  /* Pastikan kolom "Arti" tidak terpotong di tengah kata */
-  table.dataTable tbody td:nth-child(3) { /* Kolom ke-3 adalah "Arti" */
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    overflow: hidden; /* Menyembunyikan overflow jika terlalu panjang */
-  }
-
-  /* Membatasi lebar tabel agar tetap di dalam card-body */
-  .card-body {
-    overflow-x: auto; /* Scroll horizontal jika tabel terlalu lebar */
-  }
-}
-
-/* Untuk dark mode, pastikan konsistensi pada mobile */
-@media (prefers-color-scheme: dark) and (max-width: 767px) {
-  table.dataTable tbody td:nth-child(3) {
-    background-color: #1e1e1e !important;
-    color: #e9ecef !important;
-  }
-}
-
-/* ===========================================
-   ============== LIGHT MODE =================
-   =========================================== */
-
-/* Global Base & Navbar */
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
-    color: #212529;
-    font-family: 'Roboto', sans-serif;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  .navbar-brand {
-    font-size: 35px;
-    font-family: 'Amiri', serif;
-    color: #fff9d6;
-    font-weight: bold;
-    line-height: 1em;
-    text-shadow: 0 0 0 rgb(215,215,215),
-                 1px 1px 0 rgb(184,184,184),
-                 2px 2px 0 rgb(154,154,154),
-                 3px 3px 0 rgb(124,124,124),
-                 4px 4px 0 rgb(93,93,93),
-                 5px 5px 0 rgb(63,63,63),
-                 6px 6px 0 rgb(33,33,33),
-                 7px 7px 6px rgba(0,0,0,0.3),
-                 7px 7px 1px rgba(0,0,0,0.5),
-                 0 0 6px rgba(0,0,0,.2);
-  }
-  
-  /* Spinner & Animations */
-  .spinner {
-    width: 100px;
-    height: 100px;
-    border: 12px solid #f3f3f3;
-    border-top: 12px solid #28a745;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  @keyframes fadeInOut {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1.2); }
-    100% { opacity: 0; transform: scale(0.5); }
-  }
-  .copied-check { animation: fadeInOut 1s ease-out; }
-  
-  /* Card & Modal */
-  .card, .modal-content {
-    border-radius: 10px;
-    transition: box-shadow 0.3s;
-  }
-  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .card-header, .modal-header {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-  .my-card-header { background-color: #28a745; color: #fff; }
-  .my-modal-header { background-color: #28a745; color: #fff; }
-  .my-modal-content { border: 1px solid #28a745; }
-  
-  /* DataTables */
-  table.dataTable {
-    width: 100% !important;
-    table-layout: auto !important;
-    white-space: normal !important;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  table.dataTable thead th {
-    background-color: #e9ecef;
-    color: #212529;
-    border-bottom: 2px solid #dee2e6;
-    padding: 0.5rem;
-    white-space: nowrap; /* Mencegah header meluber */
-  }
-  table.dataTable tbody td {
-    padding: 0.5rem;
-    word-wrap: break-word; /* Membuat teks patah baris jika terlalu panjang */
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-  }
-  table.dataTable tbody tr:hover { background-color: #f8f9fa; }
-  
-  /* Teks Arab & Khusus Al-Fatihah */
-  .arabic-text {
-    font-family: 'Lateef', serif;
-    direction: rtl;
-    text-align: right;
-    font-size: 3rem;
-    line-height: 1.8;
-  }
-  .alfatihah-text {
-    font-family: 'Lateef', serif;
-    font-size: 3.5rem;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  }
-  .underline { text-decoration: underline; }
-  
-  /* Audio Player */
-  .audio-player {
-    display: flex;
-    align-items: center;
-    background: #dcdcdc;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 8px 3px;
-    transition: background 0.3s;
-  }
-  .audio-player:hover { background: rgba(40,167,69,0.15); }
-  .audio-player button {
-    border: none;
-    background: none;
-    font-size: 0.8rem;
-    margin-right: 10px;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  .audio-player button:hover { color: #28a745; }
-  .audio-player input[type=range] {
-    flex: 1;
-    margin-right: 10px;
-    cursor: pointer;
-  }
-  
-  .fa-star.text-warning {
-    color: #ffc107 !important;
-    text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
-  }
-  
-  /* Efek hover untuk tombol toggle */
-  .btn-outline-light:hover .fa-star {
-    transform: scale(1.2);
-    transition: all 0.3s ease;
-  }
-  /* ===========================================
-     ============== DARK MODE ====================
-     =========================================== */
-  @media (prefers-color-scheme: dark) {
+    /* Global Base & Navbar */
     body {
-      background-color: #121212 !important;
-      color: #e9ecef !important;
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+        color: #212529;
+        font-family: 'Roboto', sans-serif;
+        transition: background-color 0.3s, color 0.3s;
     }
-    .navbar {
-      background: linear-gradient(45deg, #1c7c54, #145f3f) !important;
-      border-bottom: 2px solid #145f3f !important;
+    .navbar-brand {
+        font-size: 35px;
+        font-family: 'Amiri', serif;
+        color: #fff9d6;
+        font-weight: bold;
+        line-height: 1em;
+        text-shadow: 0 0 0 rgb(215,215,215),
+                    1px 1px 0 rgb(184,184,184),
+                    2px 2px 0 rgb(154,154,154),
+                    3px 3px 0 rgb(124,124,124),
+                    4px 4px 0 rgb(93,93,93),
+                    5px 5px 0 rgb(63,63,63),
+                    6px 6px 0 rgb(33,33,33),
+                    7px 7px 6px rgba(0,0,0,0.3),
+                    7px 7px 1px rgba(0,0,0,0.5),
+                    0 0 6px rgba(0,0,0,.2);
     }
-    .card, .modal-content {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    .card-header, .modal-header {
-      background-color: #343a40 !important;
-      color: #e9ecef !important;
-    }
-    .my-modal-content { border: 1px solid #666 !important; }
-    .card:hover { box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important; }
-    
-    /* DataTables Overrides */
-    table.dataTable thead th,
-    table.dataTable thead th.sorting,
-    table.dataTable thead th.sorting_asc,
-    table.dataTable thead th.sorting_desc,
-    table.dataTable thead th.sorting_asc_disabled,
-    table.dataTable thead th.sorting_desc_disabled {
-      background-color: #343a40 !important;
-      color: #e9ecef !important;
-    }
-                    /* Aturan untuk baris yang sedang disorot (sorting_1) */
-                table.dataTable.display tbody tr.even > .sorting_1, 
-                table.dataTable.order-column.stripe tbody tr.even > .sorting_1,
-                table.dataTable.display tbody tr.odd > .sorting_1, 
-                table.dataTable.order-column.stripe tbody tr.odd > .sorting_1 {
-                  background-color: #1e1e1e !important;
-                  color: #e9ecef !important;
-                }
 
-    table.dataTable tbody tr {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
+    /* Spinner & Animations */
+    .spinner {
+        width: 100px;
+        height: 100px;
+        border: 12px solid #f3f3f3;
+        border-top: 12px solid #28a745;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
     }
-    table.dataTable tbody tr:hover { background-color: #333333 !important; }
-    table.dataTable tbody tr td:first-child { background-color: #1e1e1e !important; }
-    .dataTables_wrapper .dataTables_filter input,
-    .dataTables_wrapper .dataTables_length select {
-      color: #e9ecef !important;
-      background-color: #1e1e1e !important;
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
-    .dataTables_wrapper .dataTables_filter label,
-    .dataTables_wrapper .dataTables_length label,
-    .dataTables_wrapper .dataTables_info { color: #e9ecef !important; }
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-      color: #e9ecef !important;
-      background-color: #1e1e1e !important;
-      border: 1px solid #3a3a3a !important;
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: scale(0.5); }
+        50% { opacity: 1; transform: scale(1.2); }
+        100% { opacity: 0; transform: scale(0.5); }
     }
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-      background-color: #343a40 !important;
-      border-color: #1e1e1e !important;
+    .copied-check { animation: fadeInOut 1s ease-out; }
+
+    /* Card & Modal */
+    .card, .modal-content {
+        border-radius: 10px;
+        transition: box-shadow 0.3s;
     }
-    
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .card-header, .modal-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .my-card-header { background-color: #28a745; color: #fff; }
+    .my-modal-header { background-color: #28a745; color: #fff; }
+    .my-modal-content { border: 1px solid #28a745; }
+
+    /* Daftar Surah dalam Kotak */
+    .surah-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .surah-card {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 10px;
+        cursor: pointer;
+        transition: box-shadow 0.3s, transform 0.2s;
+        overflow: hidden;
+        position: relative;
+    }
+    .surah-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+    }
+    .surah-card .arabic-name {
+        font-family: 'Lateef', serif;
+        direction: rtl;
+        text-align: right;
+        font-size: 1.5rem;
+        color: #28a745;
+        margin-bottom: 5px;
+    }
+    .surah-card .latin-name {
+        font-size: 1rem;
+        color: #212529;
+        margin-bottom: 5px;
+    }
+    .surah-card .translation {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 5px;
+        word-break: break-word; /* Memastikan teks patah pada batas kata */
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+    .surah-card .verses {
+        font-size: 0.9rem;
+        color: #28a745;
+    }
+    .surah-card .favorite-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px; /* Dipindahkan ke kiri */
+        border: none;
+        background: none;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .surah-card .favorite-btn:hover {
+        color: #ffc107;
+    }
+
+    /* Pencarian (Search) */
+    .search-container {
+        margin-bottom: 20px;
+    }
+    #surahSearch {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    /* Paginasi */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 20px;
+    }
+    .pagination button {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .pagination button:hover {
+        background-color: #e9ecef;
+    }
+    .pagination button:disabled {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+        color: #666;
+    }
+
+    /* Teks Arab & Khusus Al-Fatihah */
+    .arabic-text {
+        font-family: 'Lateef', serif;
+        direction: rtl;
+        text-align: right;
+        font-size: 3rem;
+        line-height: 1.8;
+    }
+    .alfatihah-text {
+        font-family: 'Lateef', serif;
+        font-size: 3.5rem;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .underline { text-decoration: underline; }
+
+    /* Audio Player */
+    .audio-player {
+        display: flex;
+        align-items: center;
+        background: #dcdcdc;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 8px 3px;
+        transition: background 0.3s;
+    }
+    .audio-player:hover { background: rgba(40,167,69,0.15); }
+    .audio-player button {
+        border: none;
+        background: none;
+        font-size: 0.8rem;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .audio-player button:hover { color: #28a745; }
+    .audio-player input[type=range] {
+        flex: 1;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .fa-star.text-warning {
+        color: #ffc107 !important;
+        text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+    }
+
+    /* Efek hover untuk tombol toggle */
+    .btn-outline-light:hover .fa-star {
+        transform: scale(1.2);
+        transition: all 0.3s ease;
+    }
+    /* ===========================================
+    ============== DARK MODE ====================
+    =========================================== */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #121212 !important;
+            color: #e9ecef !important;
+        }
+        .navbar {
+            background: linear-gradient(45deg, #1c7c54, #145f3f) !important;
+            border-bottom: 2px solid #145f3f !important;
+        }
+        .card, .modal-content {
+            background-color: #1e1e1e !important;
+            color: #e9ecef !important;
+        }
+        .card-header, .modal-header {
+            background-color: #343a40 !important;
+            color: #e9ecef !important;
+        }
+        .my-modal-content { border: 1px solid #666 !important; }
+        .card:hover { box-shadow: 0 4px 12px rgba(255,255,255,0.1) !important; }
+
+        /* Daftar Surah dalam Kotak (Dark Mode) */
+        .surah-list {
+            background-color: #121212;
+        }
+        .surah-card {
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            color: #e9ecef;
+        }
+        .surah-card .arabic-name {
+            color: #80ffa7;
+        }
+        .surah-card .latin-name {
+            color: #e9ecef;
+        }
+        .surah-card .translation, .surah-card .verses {
+            color: #b0b0b0;
+        }
+        .surah-card:hover {
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+        }
     /* Select2 Overrides */
     .select2-container--default .select2-selection--single {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-      border: 1px solid #666 !important;
+        background-color: #1e1e1e !important;
+        color: #e9ecef !important;
+        border: 1px solid #666 !important;
+      }
+      .select2-container--default .select2-selection__rendered { color: #e9ecef !important; }
+      .select2-container--default .select2-results__option--selectable {
+        background-color: #1e1e1e !important;
+        color: #e9ecef !important;
+      }
+      .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #333 !important;
+        color: #e9ecef !important;
+      }
+      .select2-container--default .select2-results__message {
+        background-color: #1e1e1e !important;
+        color: #e9ecef !important;
+      }
+      .select2-container--default .select2-search--dropdown .select2-search__field {
+        background-color: #1e1e1e !important;
+        color: #e9ecef !important;
+      }
+
+        /* Tombol Bintang di Mode Gelap */
+        .surah-card .favorite-btn {
+            color: #e9ecef; /* Warna default bintang di mode gelap */
+        }
+        .surah-card .favorite-btn:hover {
+            color: #ffc107; /* Warna saat hover tetap kuning */
+        }
+        .far.fa-star { /* Bintang kosong di mode gelap */
+            color: #e9ecef !important;
+        }
+        .fas.fa-star.text-warning { /* Bintang terisi di mode gelap */
+            color: #ffc107 !important;
+            text-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        }
+
+        /* Pencarian (Search) */
+        #surahSearch {
+            background-color: #1e1e1e;
+            border: 1px solid #666;
+            color: #e9ecef;
+        }
+        #surahSearch::placeholder {
+            color: #b0b0b0;
+        }
+
+        /* Paginasi */
+        .pagination button {
+            background-color: #2d2d2d;
+            border: 1px solid #666;
+            color: #e9ecef;
+        }
+        .pagination button:hover {
+            background-color: #343a40;
+        }
+        .pagination button:disabled {
+            background-color: #1e1e1e;
+            color: #666;
+        }
     }
-    .select2-container--default .select2-selection__rendered { color: #e9ecef !important; }
-    .select2-container--default .select2-results__option--selectable {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-      background-color: #333 !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-results__message {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-search--dropdown .select2-search__field {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    
-    /* Dropdown & Audio Player */
-    .dropdown-menu.show { background-color: #1e1e1e !important; }
-    .dropdown-item { color: #e9ecef !important; }
-    .dropdown-item:hover { background-color: #333 !important; }
-    .audio-player {
-      background: #333 !important;
-      border: 1px solid #444 !important;
-    }
-    .audio-player button { color: #e9ecef !important; }
-    .audio-player button:hover { color: #80ffa7 !important; }
-    
-    /* Mobile Adjustments */
+
+    /* Responsif untuk Mobile */
     @media (max-width: 767px) {
-      .navbar { background-color: #1e1e1e !important; }
-      .navbar-brand,
-      .navbar-toggler,
-      .navbar-nav .nav-link { color: #e9ecef !important; }
-      
-      /* Aturan tambahan untuk tabel pada layar kecil */
-      table.dataTable {
-        font-size: 0.8rem; /* Mengurangi ukuran font pada layar kecil */
-      }
-      table.dataTable tbody td {
-        max-width: 100px; /* Batasi lebar maksimum sel pada layar kecil */
-      }
+        .navbar-brand {
+            font-size: 25px;
+        }
+        .surah-list {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        .surah-card {
+            padding: 8px;
+        }
+        .surah-card .arabic-name {
+            font-size: 1.2rem;
+        }
+        .surah-card .latin-name {
+            font-size: 0.9rem;
+        }
+        .surah-card .translation, .surah-card .verses {
+            font-size: 0.8rem;
+        }
+        .search-container {
+            margin-bottom: 10px;
+        }
+        #surahSearch {
+            padding: 6px;
+            font-size: 0.8rem;
+        }
+        .pagination button {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
     }
-    
-    /* Icon Override */
-    .far.fa-star { color: #e9ecef !important; }
-  }  
-  </style>
+    </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Navbar -->
-    <nav class="navbar navbar-dark" style="background-color: #28a745;">
-      <a class="navbar-brand" href="#">Al-Qur'an Digital</a>
-    </nav>
-    
-    <div class="container mt-3">
-      <!-- Penanda Terakhir Baca (Bookmark Ayat Terakhir) -->
-      <div v-if="lastRead" class="alert alert-info" role="alert" style="cursor:pointer;" @click="goToLastRead">
-        Terakhir Baca: Surat {{ lastRead.surahName }} - Ayat {{ lastRead.ayatNumber }}
-        <button type="button" class="close" @click.stop="clearLastRead"><span>×</span></button>
-      </div>
-      
-      <div class="row">
-        <div class="col-lg-12">
-          <!-- Card Daftar Surah dengan tombol Refresh dan Toggle Favorit -->
-          <div class="card my-5 border-0 shadow">
-            <div class="card-header my-card-header d-flex justify-content-between align-items-center">
-              <span>Daftar Surah</span>
-              <div>
-                <!-- Tombol untuk toggle tampilkan surah favorit -->
-                <button class="btn btn-outline-light btn-sm mr-2" @click="toggleShowFavorites" title="Tampilkan Surah Favorit">
-                  <i :class="{'fas fa-star text-warning': showFavorites, 'far fa-star': !showFavorites}"></i>
-                </button>
-                <button class="btn btn-outline-light btn-sm" @click="refreshPage" title="Refresh">
-                  <i class="fas fa-sync-alt"></i>
-                </button>
-              </div>
+    <div id="app">
+        <!-- Navbar -->
+        <nav class="navbar navbar-dark" style="background-color: #28a745;">
+            <a class="navbar-brand" href="#">Al-Qur'an Digital</a>
+        </nav>
+        
+        <div class="container mt-3">
+            <!-- Penanda Terakhir Baca (Bookmark Ayat Terakhir) -->
+            <div v-if="lastRead" class="alert alert-info" role="alert" style="cursor:pointer;" @click="goToLastRead">
+                Terakhir Baca: Surat {{ lastRead.surahName }} - Ayat {{ lastRead.ayatNumber }}
+                <button type="button" class="close" @click.stop="clearLastRead"><span>×</span></button>
             </div>
-            <div class="card-body">
-              <div v-if="loading" class="d-flex justify-content-center">
-                <div class="spinner"></div>
-              </div>
-              <div v-else>
-                <table class="display table" id="list">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Surah</th>
-                      <th>Arti</th>
-                      <th>Ayat</th>
-                      <th><i style="margin-left: 10px;" class="fas fa-star"></i></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Iterasi berdasarkan filteredSurahs -->
-                    <tr v-for="(data, idx) in currentSurahList" :key="data.nomor">
-                      <td>{{ idx + 1 }}</td>
-                      <td>
-                        <a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" @click="getDetail(data.nomor)">
-                          {{ data.nama_latin }}<br>{{ data.nama }}
-                        </a>
-                      </td>
-                      <td>{{ data.arti }}</td>
-                      <td>{{ data.jumlah_ayat }}</td>
-                      <td>
-                        <button class="btn btn-sm" @click="toggleSurahBookmark(data)">
-                          <i :class="{'fas fa-star text-warning': isSurahBookmarked(data.nomor), 'far fa-star': !isSurahBookmarked(data.nomor)}"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Modal Detail Surah -->
-          <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content my-modal-content">
-                <div class="modal-header my-modal-header">
-                  <h5 style="font-size: 2rem;" id="detailModalLabel">
-                    Surat <span :class="{'alfatihah-text': detail.nomor == 1}">{{ detail.asma }}</span>
-                  </h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div v-if="loading2" class="d-flex justify-content-center">
-                    <div class="spinner"></div>
-                  </div>
-                  <div v-else>
-                    <div class="row p-1">
-                      <!-- Panel Metadata & Audio Surah -->
-                      <div class="col-lg-6">
-                        <dl class="row">
-                          <dt class="col-sm-3">Nama</dt>
-                          <dd class="col-sm-9">
-                            {{ detail.nama }}<br>{{ detail.asma }}
-                          </dd>
-                          <dt class="col-sm-3">Arti</dt>
-                          <dd class="col-sm-9">{{ detail.arti }}</dd>
-                          <dt class="col-sm-3">Diturunkan di</dt>
-                          <dd class="col-sm-9">{{ detail.type }}</dd>
-                          <dt class="col-sm-3">Audio Surah</dt>
-                          <dd style="margin-left: 10px;">
-                            <div class="audio-player" v-if="surahAudio">
-                              <button @click="rewindSurahAudio"><i class="fas fa-backward"></i></button>
-                              <button @click="toggleSurahAudio">
-                                <i :class="{'fas fa-pause': surahAudioPlaying, 'fas fa-play': !surahAudioPlaying}"></i>
-                              </button>
-                              <input type="range" min="0" :max="surahAudioDuration" step="0.1" 
-                                     v-model="surahAudioCurrent" @input="seekSurahAudio">
-                              <button @click="forwardSurahAudio"><i class="fas fa-forward"></i></button>
-                              <span>{{ formatTime(surahAudioCurrent) }} / {{ formatTime(surahAudioDuration) }}</span>
-                            </div>
-                            <div v-else>
-                              <em>Tidak ada audio surah</em>
-                            </div>
-                          </dd>
-                          <dt class="col-sm-3 text-truncate">Keterangan</dt>
-                          <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
-                            <span v-html="detail.keterangan"></span>
-                          </dd>
-                        </dl>
-                      </div>
-                      
-                      <!-- Panel Bacaan Surat -->
-                      <div class="col-lg-6">
-                        <h3 class="underline">Bacaan Surat {{ detail.asma }}</h3>
-                        <!-- Tampilkan Bismillah kecuali surah 1 -->
-                        <div v-if="detail.nomor !== 1" class="text-center mb-3" style="font-family: 'Lateef', serif; font-size: 2rem; color: #28a745;">
-                          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-                        </div>
-                        <!-- Select2 untuk lompat ke ayat -->
-                        <div class="mb-3">
-                          <select id="ayatSelect" style="width: 100%;"></select>
-                        </div>
-                        <!-- Daftar Ayat dengan Tombol Bookmark -->
-                        <div class="border border-success p-3" style="max-height: 450px; overflow-y: scroll; border-radius: 8px;">
-                          <span v-for="(ayat, idx) in ayats" :key="ayat.nomor" :id="'ayat-' + ayat.nomor">
-                            <p>
-                              <span class="badge badge-pill badge-success">Ayat {{ ayat.nomor }}</span>
-                            </p>
-                            <p class="arabic-text">{{ ayat.ar }}</p>
-                            <p>
-                              <small v-html="(ayat.tr && ayat.tr.trim()) ? ayat.tr : '(Transliterasi tidak tersedia)'"></small><br>
-                              <small class="text-left font-italic">
-                                {{ (ayat.id && ayat.id.trim()) ? ayat.id : '(Terjemahan tidak tersedia)' }}
-                              </small>
-                            </p>
-                            <div class="mt-2">
-                              <!-- Tombol Copy -->
-                              <button class="btn btn-sm btn-outline-secondary" @click="copyAyat(idx+1, ayat)">
-                                <i v-if="copiedAyats[ayat.nomor]" class="fas fa-check copied-check"></i>
-                                <i v-else class="fas fa-copy"></i> Copy
-                              </button>
-                              <!-- Tombol Play per Ayat -->
-                              <button class="btn btn-sm btn-outline-primary ml-2" @click="togglePlay(ayat, idx)">
-                                <i v-if="currentAudioIndex === idx && isPlaying" class="fas fa-stop"></i>
-                                <i v-else class="fas fa-play"></i>
-                                <span v-if="currentAudioIndex === idx && isPlaying"> Stop</span>
-                                <span v-else> Play</span>
-                              </button>
-                              <!-- Tombol Bookmark Ayat (Terakhir Baca) -->
-                              <button class="btn btn-sm btn-outline-info ml-2" @click="toggleAyatBookmark(ayat)">
-                                <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
-                              </button>
-                              <!-- Tombol Share -->
-                              <div class="btn-group ml-2">
-                                <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
-                                  Share
+        
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Card Daftar Surah dengan Pencarian dan Paginasi -->
+                    <div class="card my-5 border-0 shadow">
+                        <div class="card-header my-card-header d-flex justify-content-between align-items-center">
+                            <span>Daftar Surah</span>
+                            <div>
+                                <!-- Tombol untuk toggle tampilkan surah favorit -->
+                                <button class="btn btn-outline-light btn-sm mr-2" @click="toggleShowFavorites" title="Tampilkan Surah Favorit">
+                                    <i :class="{'fas fa-star text-warning': showFavorites, 'far fa-star': !showFavorites}"></i>
                                 </button>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" href="#" @click.prevent="shareAyat('whatsapp', ayat)">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp
-                                  </a>
-                                  <a class="dropdown-item" href="#" @click.prevent="shareAyat('facebook', ayat)">
-                                    <i class="fab fa-facebook-f"></i> Facebook
-                                  </a>
-                                  <a class="dropdown-item" href="#" @click.prevent="shareAyat('instagram', ayat)">
-                                    <i class="fab fa-instagram"></i> Instagram
-                                  </a>
-                                </div>
-                              </div>
+                                <button class="btn btn-outline-light btn-sm" @click="refreshPage" title="Refresh">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
                             </div>
-                            <hr>
-                          </span>
                         </div>
-                      </div>
-                    </div><!-- End row -->
-                  </div>
+                        <div class="card-body">
+                            <div class="search-container">
+                                <input type="text" id="surahSearch" v-model="searchQuery" placeholder="Cari surah..." @input="filterSurahs">
+                            </div>
+                            <div v-if="loading" class="d-flex justify-content-center">
+                                <div class="spinner"></div>
+                            </div>
+                            <div v-else class="surah-list">
+                                <div v-for="(data, idx) in paginatedSurahs" :key="data.nomor" class="surah-card" @click="openDetailModal(data.nomor)">
+                                    <button class="favorite-btn" @click.stop="toggleSurahBookmark(data)">
+                                        <i :class="{'fas fa-star text-warning': isSurahBookmarked(data.nomor), 'far fa-star': !isSurahBookmarked(data.nomor)}"></i>
+                                    </button>
+                                    <div class="arabic-name">{{ data.nama }}</div>
+                                    <div class="latin-name">{{ data.nama_latin }}</div>
+                                    <div class="translation">{{ data.arti }}</div>
+                                    <div class="verses">{{ data.jumlah_ayat }} Ayat</div>
+                                </div>
+                            </div>
+                            <div class="pagination">
+                                <button :disabled="currentPage === 1" @click="previousPage">Previous</button>
+                                <span>{{ currentPage }} / {{ totalPages }}</span>
+                                <button :disabled="currentPage === totalPages" @click="nextPage">Next</button>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Modal Detail Surah -->
+                    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content my-modal-content">
+                                <div class="modal-header my-modal-header">
+                                    <h5 style="font-size: 2rem;" id="detailModalLabel">
+                                        Surat <span :class="{'alfatihah-text': detail.nomor == 1}">{{ detail.asma }}</span>
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div v-if="loading2" class="d-flex justify-content-center">
+                                        <div class="spinner"></div>
+                                    </div>
+                                    <div v-else>
+                                        <div class="row p-1">
+                                            <!-- Panel Metadata & Audio Surah -->
+                                            <div class="col-lg-6">
+                                                <dl class="row">
+                                                    <dt class="col-sm-3">Nama</dt>
+                                                    <dd class="col-sm-9">
+                                                        {{ detail.nama }}<br>{{ detail.asma }}
+                                                    </dd>
+                                                    <dt class="col-sm-3">Arti</dt>
+                                                    <dd class="col-sm-9">{{ detail.arti }}</dd>
+                                                    <dt class="col-sm-3">Diturunkan di</dt>
+                                                    <dd class="col-sm-9">{{ detail.type }}</dd>
+                                                    <dt class="col-sm-3">Audio Surah</dt>
+                                                    <dd style="margin-left: 10px;">
+                                                        <div class="audio-player" v-if="surahAudio">
+                                                            <button @click="rewindSurahAudio"><i class="fas fa-backward"></i></button>
+                                                            <button @click="toggleSurahAudio">
+                                                                <i :class="{'fas fa-pause': surahAudioPlaying, 'fas fa-play': !surahAudioPlaying}"></i>
+                                                            </button>
+                                                            <input type="range" min="0" :max="surahAudioDuration" step="0.1" 
+                                                                    v-model="surahAudioCurrent" @input="seekSurahAudio">
+                                                            <button @click="forwardSurahAudio"><i class="fas fa-forward"></i></button>
+                                                            <span>{{ formatTime(surahAudioCurrent) }} / {{ formatTime(surahAudioDuration) }}</span>
+                                                        </div>
+                                                        <div v-else>
+                                                            <em>Tidak ada audio surah</em>
+                                                        </div>
+                                                    </dd>
+                                                    <dt class="col-sm-3 text-truncate">Keterangan</dt>
+                                                    <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
+                                                        <span v-html="detail.keterangan"></span>
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                            
+                                            <!-- Panel Bacaan Surat -->
+                                            <div class="col-lg-6">
+                                                <h3 class="underline">Bacaan Surat {{ detail.asma }}</h3>
+                                                <!-- Tampilkan Bismillah kecuali surah 1 -->
+                                                <div v-if="detail.nomor !== 1" class="text-center mb-3" style="font-family: 'Lateef', serif; font-size: 2rem; color: #28a745;">
+                                                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                                                </div>
+                                                <!-- Select2 untuk lompat ke ayat -->
+                                                <div class="mb-3">
+                                                    <select id="ayatSelect" style="width: 100%;"></select>
+                                                </div>
+                                                <!-- Daftar Ayat dengan Tombol Bookmark -->
+                                                <div class="border border-success p-3" style="max-height: 450px; overflow-y: scroll; border-radius: 8px;">
+                                                    <span v-for="(ayat, idx) in ayats" :key="ayat.nomor" :id="'ayat-' + ayat.nomor">
+                                                        <p>
+                                                            <span class="badge badge-pill badge-success">Ayat {{ ayat.nomor }}</span>
+                                                        </p>
+                                                        <p class="arabic-text">{{ ayat.ar }}</p>
+                                                        <p>
+                                                            <small v-html="(ayat.tr && ayat.tr.trim()) ? ayat.tr : '(Transliterasi tidak tersedia)'"></small><br>
+                                                            <small class="text-left font-italic">
+                                                                {{ (ayat.id && ayat.id.trim()) ? ayat.id : '(Terjemahan tidak tersedia)' }}
+                                                            </small>
+                                                        </p>
+                                                        <div class="mt-2">
+                                                            <!-- Tombol Copy -->
+                                                            <button class="btn btn-sm btn-outline-secondary" @click="copyAyat(idx+1, ayat)">
+                                                                <i v-if="copiedAyats[ayat.nomor]" class="fas fa-check copied-check"></i>
+                                                                <i v-else class="fas fa-copy"></i> Copy
+                                                            </button>
+                                                            <!-- Tombol Play per Ayat -->
+                                                            <button class="btn btn-sm btn-outline-primary ml-2" @click="togglePlay(ayat, idx)">
+                                                                <i v-if="currentAudioIndex === idx && isPlaying" class="fas fa-stop"></i>
+                                                                <i v-else class="fas fa-play"></i>
+                                                                <span v-if="currentAudioIndex === idx && isPlaying"> Stop</span>
+                                                                <span v-else> Play</span>
+                                                            </button>
+                                                            <!-- Tombol Bookmark Ayat (Terakhir Baca) -->
+                                                            <button class="btn btn-sm btn-outline-info ml-2" @click="toggleAyatBookmark(ayat)">
+                                                                <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
+                                                            </button>
+                                                            <!-- Tombol Share -->
+                                                            <div class="btn-group ml-2">
+                                                                <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+                                                                    Share
+                                                                </button>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('whatsapp', ayat)">
+                                                                        <i class="fab fa-whatsapp"></i> WhatsApp
+                                                                    </a>
+                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('facebook', ayat)">
+                                                                        <i class="fab fa-facebook-f"></i> Facebook
+                                                                    </a>
+                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('instagram', ayat)">
+                                                                        <i class="fab fa-instagram"></i> Instagram
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- End row -->
+                                    </div>
+                                </div>
+                                <!-- Modal Footer dengan Navigasi Surah -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" @click="prevSurah" :disabled="!hasPrev"><i class="fas fa-arrow-left"></i></button>
+                                    <button type="button" class="btn btn-success" @click="nextSurah" :disabled="!hasNext"><i class="fas fa-arrow-right"></i></button>
+                                    <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Modal -->
                 </div>
-                <!-- Modal Footer dengan Navigasi Surah -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-success" @click="prevSurah" :disabled="!hasPrev"><i class="fas fa-arrow-left"></i></button>
-                  <button type="button" class="btn btn-success" @click="nextSurah" :disabled="!hasNext"><i class="fas fa-arrow-right"></i></button>
-                  <button type="button" class="btn btn-secondary text-light" data-dismiss="modal">Close</button>
-                </div>
-              </div>
             </div>
-          </div>
-          <!-- End Modal -->
         </div>
-      </div>
     </div>
-  </div>
-  
-  <!-- jQuery, DataTables, Popper, Bootstrap JS -->
-  <script 
-    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous">
-  </script>
-  <script 
-    src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
-  </script>
-  <script 
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-    crossorigin="anonymous">
-  </script>
-  <script 
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-    crossorigin="anonymous">
-  </script>
-  <!-- Vue.js dan Vue Resource -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
-  </script>
-  <script 
-    src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1">
-  </script>
-  <!-- Select2 JS -->
-  <script 
-    src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
-  </script>
-  
-  <script>
-    var app = new Vue({
-      el: '#app',
-      data: {
-        allSurahs: [],
-        detail: {},
-        ayats: [],
-        loading: false,
-        loading2: false,
-        audioUrl: '',
-        surahAudio: null,
-        surahAudioPlaying: false,
-        surahAudioCurrent: 0,
-        surahAudioDuration: 0,
-        currentAudio: null,
-        currentAudioIndex: null,
-        isPlaying: false,
-        copiedAyats: {},
-        lastRead: null,
-        bookmarkedSurahs: {}, // Objek untuk menyimpan surah yang dibintangi
-        showFavorites: false,
-        dataTable: null,
-        previousPage: 0 // Menyimpan halaman sebelumnya
-      },
-      computed: {
-        currentSurahList() {
-          return this.showFavorites ? this.allSurahs.filter(s => this.isSurahBookmarked(s.nomor)) : this.allSurahs;
-        },
-        currentIndex() {
-          if (!this.detail.nomor) return -1;
-          return this.currentSurahList.findIndex(s => s.nomor == this.detail.nomor);
-        },
-        hasPrev() {
-          return this.currentIndex > 0;
-        },
-        hasNext() {
-          return this.currentIndex >= 0 && this.currentIndex < this.currentSurahList.length - 1;
-        }
-      },
-      methods: {
-        refreshPage() {
-          window.location.reload();
-        },
-        padNumber(num, digits) {
-          return num.toString().padStart(digits, '0');
-        },
-        getDetail(nomorSurah) {
-          this.loading2 = true;
-          this.$http.get(`https://equran.id/api/surat/${nomorSurah}`).then(response => {
-            let res = response.body;
-            this.detail = {
-              nomor: res.nomor,
-              nama: res.nama,
-              asma: res.nama_latin,
-              arti: res.arti,
-              type: res.tempat_turun,
-              keterangan: res.deskripsi || ""
-            };
-            let rawAyats = res.ayat || [];
-            this.ayats = rawAyats.map(a => {
-              let primaryAudio = `https://cdn.islamic.network/quran/audio/128/ar.abdulbasit/${this.padNumber(nomorSurah, 3)}_${this.padNumber(a.nomor, 3)}.mp3`;
-              let fallbackAudio = `https://everyayah.com/data/Abdul_Basit_Mujawwad_128kbps/${this.padNumber(nomorSurah, 3)}${this.padNumber(a.nomor, 3)}.mp3`;
-              return {
-                nomor: a.nomor,
-                ar: a.ar,
-                tr: a.tr,
-                id: a.idn,
-                audio: primaryAudio,
-                fallbackAudio: fallbackAudio
-              };
-            });
-            this.getAudioSurah(nomorSurah);
-            this.initSurahAudio();
-            this.loading2 = false;
-            this.$nextTick(() => {
-              this.initSelect2();
-            });
-          }).catch(err => {
-            console.error('getDetail error', err);
-            this.loading2 = false;
-          });
-        },
-        getAudioSurah(nomor) {
-          this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomor}.mp3`;
-        },
-        initSurahAudio() {
-          if (this.surahAudio) { this.surahAudio.pause(); }
-          this.surahAudio = new Audio(this.audioUrl);
-          this.surahAudio.addEventListener('loadedmetadata', () => {
-            this.surahAudioDuration = this.surahAudio.duration;
-          });
-          this.surahAudio.addEventListener('timeupdate', () => {
-            this.surahAudioCurrent = this.surahAudio.currentTime;
-          });
-          this.surahAudio.addEventListener('ended', () => {
-            this.surahAudioPlaying = false;
-          });
-        },
-        toggleSurahAudio() {
-          if (!this.surahAudio) return;
-          if (this.surahAudioPlaying) {
-            this.surahAudio.pause();
-            this.surahAudioPlaying = false;
-          } else {
-            this.surahAudio.play();
-            this.surahAudioPlaying = true;
-          }
-        },
-        rewindSurahAudio() {
-          if (this.surahAudio) {
-            this.surahAudio.currentTime = Math.max(0, this.surahAudio.currentTime - 5);
-          }
-        },
-        forwardSurahAudio() {
-          if (this.surahAudio) {
-            this.surahAudio.currentTime = Math.min(this.surahAudioDuration, this.surahAudio.currentTime + 5);
-          }
-        },
-        seekSurahAudio(e) {
-          if (!this.surahAudio) return;
-          this.surahAudio.currentTime = e.target.value;
-        },
-        formatTime(sec) {
-          let m = Math.floor(sec / 60);
-          let s = Math.floor(sec % 60);
-          return `${m}:${s < 10 ? '0' : ''}${s}`;
-        },
-        togglePlay(item, idx) {
-          if (this.currentAudio && this.currentAudioIndex === idx) {
-            if (this.isPlaying) {
-              this.currentAudio.pause();
-              this.isPlaying = false;
-            } else {
-              this.currentAudio.play();
-              this.isPlaying = true;
-            }
-          } else {
-            if (this.currentAudio) { this.currentAudio.pause(); }
-            if (item.audio) {
-              this.currentAudio = new Audio(item.audio);
-              this.currentAudioIndex = idx;
-              this.isPlaying = true;
-              this.currentAudio.onerror = () => {
-                console.error("Primary audio failed for ayat", item.nomor, ", trying fallback audio.");
-                if (item.fallbackAudio) {
-                  this.currentAudio.src = item.fallbackAudio;
-                  this.currentAudio.load();
-                  this.currentAudio.play().catch(err => console.error("Fallback audio also failed:", err));
-                }
-              };
-              this.currentAudio.onended = () => {
-                let nextIdx = idx + 1;
-                if (nextIdx < this.ayats.length && this.ayats[nextIdx].audio) {
-                  this.togglePlay(this.ayats[nextIdx], nextIdx);
-                  let t = document.getElementById(`ayat-${nextIdx+1}`);
-                  if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
-                } else {
-                  this.isPlaying = false;
-                  this.currentAudio = null;
-                  this.currentAudioIndex = null;
-                }
-              };
-              this.currentAudio.play();
-              let t = document.getElementById(`ayat-${idx+1}`);
-              if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          }
-        },
-        copyAyat(idx, item) {
-          let text = `Ayat ${idx}\nArab: ${item.ar}\nLatin: ${item.tr}\nTerjemahan: ${item.id}`;
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(text)
-              .then(() => {
-                this.$set(this.copiedAyats, item.nomor, true);
-                setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
-              })
-              .catch(err => console.error("Gagal menyalin:", err));
-          } else {
-            let ta = document.createElement("textarea");
-            ta.value = text;
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-              document.execCommand('copy');
-              this.$set(this.copiedAyats, item.nomor, true);
-              setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
-            } catch (err) {
-              console.error("Gagal menyalin:", err);
-            }
-            document.body.removeChild(ta);
-          }
-        },
-        shareAyat(platform, item) {
-          let text = `${item.ar}\n\n${item.id}\n\n(Dibagikan dari aplikasi Al-Qur'an)`;
-          if (platform === 'whatsapp') {
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-          } else if (platform === 'facebook') {
-            let url = 'https://example.com';
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(text)}`, '_blank');
-          } else if (platform === 'instagram') {
-            window.open('https://instagram.com/', '_blank');
-          }
-        },
-        initSelect2() {
-          let options = this.ayats.map(a => {
-            return { 
-              id: a.nomor, 
-              text: `Ayat ${a.nomor}: ${a.ar.substring(0, 20)}...`
-            };
-          });
-          $('#ayatSelect').select2({
-            placeholder: 'Pilih ayat...',
-            allowClear: true,
-            data: options
-          });
-          $('#ayatSelect').off('change').on('change', () => {
-            let val = $('#ayatSelect').val();
-            if (val) {
-              let t = document.getElementById(`ayat-${val}`);
-              if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          });
-        },
-        isAyatBookmarked(surahNumber, ayatNumber) {
-          return this.lastRead &&
-                 this.lastRead.surahNumber === surahNumber &&
-                 this.lastRead.ayatNumber === ayatNumber;
-        },
-        toggleAyatBookmark(ayat) {
-          if (this.isAyatBookmarked(this.detail.nomor, ayat.nomor)) {
-            this.lastRead = null;
-          } else {
-            this.lastRead = {
-              surahNumber: this.detail.nomor,
-              surahName: this.detail.asma,
-              ayatNumber: ayat.nomor,
-              ar: ayat.ar,
-              tr: ayat.tr,
-              id: ayat.id
-            };
-          }
-        },
-        goToLastRead() {
-          if (this.lastRead) {
-            this.getDetail(this.lastRead.surahNumber);
-            $('#detailModal').modal('show');
-            this.$nextTick(() => {
-              setTimeout(() => {
-                let t = document.getElementById(`ayat-${this.lastRead.ayatNumber}`);
-                if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
-              }, 500);
-            });
-          }
-        },
-        clearLastRead() {
-          this.lastRead = null;
-        },
-        isSurahBookmarked(surahNumber) {
-          return !!this.bookmarkedSurahs[surahNumber];
-        },
-        toggleSurahBookmark(surah) {
-          let currentPage = this.dataTable ? this.dataTable.page() : 0;
-          if (this.isSurahBookmarked(surah.nomor)) {
-            this.$delete(this.bookmarkedSurahs, surah.nomor);
-            surah.isFavorite = false;
-          } else {
-            this.$set(this.bookmarkedSurahs, surah.nomor, surah);
-            surah.isFavorite = true;
-          }
-          if (this.dataTable) {
-            this.dataTable.rows().invalidate();
-            if (this.showFavorites) {
-              this.dataTable.column(5).search('true').draw();
-            } else {
-              this.dataTable.draw();
-            }
-            if (currentPage < this.dataTable.page.info().pages) {
-              this.dataTable.page(currentPage).draw('page');
-            }
-          }
-        },
-        toggleShowFavorites() {
-          if (this.dataTable) {
-            this.previousPage = this.dataTable.page();
-            this.showFavorites = !this.showFavorites;
-            if (this.showFavorites) {
-              this.dataTable.column(5).search('true').draw();
-            } else {
-              this.dataTable.column(5).search('').draw();
-              if (this.previousPage < this.dataTable.page.info().pages) {
-                this.dataTable.page(this.previousPage).draw('page');
-              }
-            }
-          }
-        },
-        prevSurah() {
-          if (this.hasPrev) {
-            let prevSurah = this.currentSurahList[this.currentIndex - 1];
-            this.getDetail(prevSurah.nomor);
-          }
-        },
-        nextSurah() {
-          if (this.hasNext) {
-            let nextSurah = this.currentSurahList[this.currentIndex + 1];
-            this.getDetail(nextSurah.nomor);
-          }
-        }
-      },
-      mounted() {
-        this.loading = true;
-        this.$http.get('https://equran.id/api/surat')
-          .then(res => {
-            this.allSurahs = res.body.map(surah => {
-              surah.isFavorite = this.isSurahBookmarked(surah.nomor);
-              return surah;
-            });
-            this.loading = false;
-            this.$nextTick(() => {
-              this.dataTable = $('#list').DataTable({
-                paging: true,
-                searching: true,
-                info: true,
-                data: this.allSurahs,
-                columns: [
-                  { data: null, render: (data, type, row, meta) => meta.row + 1 },
-                  { 
-                    data: 'nama_latin', 
-                    render: (data, type, row) => {
-                      return `<a href="#" class="text-success" data-toggle="modal" data-target="#detailModal" onclick="app.getDetail(${row.nomor})">${row.nama_latin}<br>${row.nama}</a>`;
-                    }
-                  },
-                  { data: 'arti' },
-                  { data: 'jumlah_ayat' },
-                  { 
-                    data: null, 
-                    render: (data, type, row) => {
-                      return `<button class="btn btn-sm" onclick="app.toggleSurahBookmark(app.allSurahs[${row.nomor - 1}])">
-                                <i class="${row.isFavorite ? 'fas fa-star text-warning' : 'far fa-star'}"></i>
-                              </button>`;
-                    }
-                  },
-                  { data: 'isFavorite', visible: false } // Kolom tersembunyi
-                ],
-                responsive: true, // Menambahkan responsivitas
-                language: {
-                  paginate: {
-                    previous: '<i class="fa fa-chevron-left"></i>',
-                    next: '<i class="fa fa-chevron-right"></i>'
-                  }
-                }
-              });
-            });
-          })
-          .catch(err => {
-            console.log('error', err);
-            this.loading = false;
-          });
     
-        $('#detailModal').on('hidden.bs.modal', () => {
-          if (this.surahAudio) {
-            this.surahAudio.pause();
-            this.surahAudio.currentTime = 0;
-            this.surahAudioPlaying = false;
-          }
-          if (this.currentAudio) {
-            this.currentAudio.pause();
-            this.currentAudio.currentTime = 0;
-            this.isPlaying = false;
-            this.currentAudio = null;
-            this.currentAudioIndex = null;
-          }
+    <!-- jQuery, Popper, Bootstrap JS -->
+    <script 
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous">
+    </script>
+    <script 
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous">
+    </script>
+    <script 
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous">
+    </script>
+    <!-- Vue.js dan Vue Resource -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+    </script>
+    <script 
+        src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1">
+    </script>
+    <!-- Select2 JS -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
+    </script>
+    
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                allSurahs: [],
+                detail: {},
+                ayats: [],
+                loading: false,
+                loading2: false,
+                audioUrl: '',
+                surahAudio: null,
+                surahAudioPlaying: false,
+                surahAudioCurrent: 0,
+                surahAudioDuration: 0,
+                currentAudio: null,
+                currentAudioIndex: null,
+                isPlaying: false,
+                copiedAyats: {},
+                lastRead: null,
+                bookmarkedSurahs: {},
+                showFavorites: false,
+                searchQuery: '',
+                currentPage: 1,
+                itemsPerPage: 10
+            },
+            computed: {
+                filteredSurahs() {
+                    let filtered = this.allSurahs;
+                    if (this.showFavorites) {
+                        filtered = filtered.filter(s => this.isSurahBookmarked(s.nomor));
+                    }
+                    if (this.searchQuery) {
+                        const query = this.searchQuery.toLowerCase();
+                        filtered = filtered.filter(s => 
+                            s.nama_latin.toLowerCase().includes(query) ||
+                            s.nama.toLowerCase().includes(query) ||
+                            s.arti.toLowerCase().includes(query)
+                        );
+                    }
+                    return filtered;
+                },
+                totalPages() {
+                    return Math.ceil(this.filteredSurahs.length / this.itemsPerPage);
+                },
+                paginatedSurahs() {
+                    const start = (this.currentPage - 1) * this.itemsPerPage;
+                    const end = start + this.itemsPerPage;
+                    return this.filteredSurahs.slice(start, end);
+                },
+                currentIndex() {
+                    if (!this.detail.nomor) return -1;
+                    return this.filteredSurahs.findIndex(s => s.nomor == this.detail.nomor);
+                },
+                hasPrev() {
+                    return this.currentIndex > 0;
+                },
+                hasNext() {
+                    return this.currentIndex >= 0 && this.currentIndex < this.filteredSurahs.length - 1;
+                }
+            },
+            methods: {
+                refreshPage() {
+                    window.location.reload();
+                },
+                padNumber(num, digits) {
+                    return num.toString().padStart(digits, '0');
+                },
+                getDetail(nomorSurah) {
+                    this.loading2 = true;
+                    this.$http.get(`https://equran.id/api/surat/${nomorSurah}`).then(response => {
+                        let res = response.body;
+                        this.detail = {
+                            nomor: res.nomor,
+                            nama: res.nama,
+                            asma: res.nama_latin,
+                            arti: res.arti,
+                            type: res.tempat_turun,
+                            keterangan: res.deskripsi || ""
+                        };
+                        let rawAyats = res.ayat || [];
+                        this.ayats = rawAyats.map(a => {
+                            let primaryAudio = `https://cdn.islamic.network/quran/audio/128/ar.abdulbasit/${this.padNumber(nomorSurah, 3)}_${this.padNumber(a.nomor, 3)}.mp3`;
+                            let fallbackAudio = `https://everyayah.com/data/Abdul_Basit_Mujawwad_128kbps/${this.padNumber(nomorSurah, 3)}${this.padNumber(a.nomor, 3)}.mp3`;
+                            return {
+                                nomor: a.nomor,
+                                ar: a.ar,
+                                tr: a.tr,
+                                id: a.idn,
+                                audio: primaryAudio,
+                                fallbackAudio: fallbackAudio
+                            };
+                        });
+                        this.getAudioSurah(nomorSurah);
+                        this.initSurahAudio();
+                        this.loading2 = false;
+                        this.$nextTick(() => {
+                            this.initSelect2();
+                        });
+                    }).catch(err => {
+                        console.error('getDetail error', err);
+                        this.loading2 = false;
+                    });
+                },
+                openDetailModal(nomorSurah) {
+                    this.getDetail(nomorSurah);
+                    $('#detailModal').modal('show');
+                },
+                getAudioSurah(nomor) {
+                    this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomor}.mp3`;
+                },
+                initSurahAudio() {
+                    if (this.surahAudio) { this.surahAudio.pause(); }
+                    this.surahAudio = new Audio(this.audioUrl);
+                    this.surahAudio.addEventListener('loadedmetadata', () => {
+                        this.surahAudioDuration = this.surahAudio.duration;
+                    });
+                    this.surahAudio.addEventListener('timeupdate', () => {
+                        this.surahAudioCurrent = this.surahAudio.currentTime;
+                    });
+                    this.surahAudio.addEventListener('ended', () => {
+                        this.surahAudioPlaying = false;
+                    });
+                },
+                toggleSurahAudio() {
+                    if (!this.surahAudio) return;
+                    if (this.surahAudioPlaying) {
+                        this.surahAudio.pause();
+                        this.surahAudioPlaying = false;
+                    } else {
+                        this.surahAudio.play();
+                        this.surahAudioPlaying = true;
+                    }
+                },
+                rewindSurahAudio() {
+                    if (this.surahAudio) {
+                        this.surahAudio.currentTime = Math.max(0, this.surahAudio.currentTime - 5);
+                    }
+                },
+                forwardSurahAudio() {
+                    if (this.surahAudio) {
+                        this.surahAudio.currentTime = Math.min(this.surahAudioDuration, this.surahAudio.currentTime + 5);
+                    }
+                },
+                seekSurahAudio(e) {
+                    if (!this.surahAudio) return;
+                    this.surahAudio.currentTime = e.target.value;
+                },
+                formatTime(sec) {
+                    let m = Math.floor(sec / 60);
+                    let s = Math.floor(sec % 60);
+                    return `${m}:${s < 10 ? '0' : ''}${s}`;
+                },
+                togglePlay(item, idx) {
+                    if (this.currentAudio && this.currentAudioIndex === idx) {
+                        if (this.isPlaying) {
+                            this.currentAudio.pause();
+                            this.isPlaying = false;
+                        } else {
+                            this.currentAudio.play();
+                            this.isPlaying = true;
+                        }
+                    } else {
+                        if (this.currentAudio) { this.currentAudio.pause(); }
+                        if (item.audio) {
+                            this.currentAudio = new Audio(item.audio);
+                            this.currentAudioIndex = idx;
+                            this.isPlaying = true;
+                            this.currentAudio.onerror = () => {
+                                console.error("Primary audio failed for ayat", item.nomor, ", trying fallback audio.");
+                                if (item.fallbackAudio) {
+                                    this.currentAudio.src = item.fallbackAudio;
+                                    this.currentAudio.load();
+                                    this.currentAudio.play().catch(err => console.error("Fallback audio also failed:", err));
+                                }
+                            };
+                            this.currentAudio.onended = () => {
+                                let nextIdx = idx + 1;
+                                if (nextIdx < this.ayats.length && this.ayats[nextIdx].audio) {
+                                    this.togglePlay(this.ayats[nextIdx], nextIdx);
+                                    let t = document.getElementById(`ayat-${nextIdx+1}`);
+                                    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+                                } else {
+                                    this.isPlaying = false;
+                                    this.currentAudio = null;
+                                    this.currentAudioIndex = null;
+                                }
+                            };
+                            this.currentAudio.play();
+                            let t = document.getElementById(`ayat-${idx+1}`);
+                            if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
+                    }
+                },
+                copyAyat(idx, item) {
+                    let text = `Ayat ${idx}\nArab: ${item.ar}\nLatin: ${item.tr}\nTerjemahan: ${item.id}`;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text)
+                            .then(() => {
+                                this.$set(this.copiedAyats, item.nomor, true);
+                                setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
+                            })
+                            .catch(err => console.error("Gagal menyalin:", err));
+                    } else {
+                        let ta = document.createElement("textarea");
+                        ta.value = text;
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try {
+                            document.execCommand('copy');
+                            this.$set(this.copiedAyats, item.nomor, true);
+                            setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
+                        } catch (err) {
+                            console.error("Gagal menyalin:", err);
+                        }
+                        document.body.removeChild(ta);
+                    }
+                },
+                shareAyat(platform, item) {
+                    let text = `${item.ar}\n\n${item.id}\n\n(Dibagikan dari aplikasi Al-Qur'an)`;
+                    if (platform === 'whatsapp') {
+                        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+                    } else if (platform === 'facebook') {
+                        let url = 'https://example.com';
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}"e=${encodeURIComponent(text)}`, '_blank');
+                    } else if (platform === 'instagram') {
+                        window.open('https://instagram.com/', '_blank');
+                    }
+                },
+                initSelect2() {
+                    let options = this.ayats.map(a => {
+                        return { 
+                            id: a.nomor, 
+                            text: `Ayat ${a.nomor}: ${a.ar.substring(0, 20)}...`
+                        };
+                    });
+                    $('#ayatSelect').select2({
+                        placeholder: 'Pilih ayat...',
+                        allowClear: true,
+                        data: options
+                    });
+                    $('#ayatSelect').off('change').on('change', () => {
+                        let val = $('#ayatSelect').val();
+                        if (val) {
+                            let t = document.getElementById(`ayat-${val}`);
+                            if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
+                    });
+                },
+                isAyatBookmarked(surahNumber, ayatNumber) {
+                    return this.lastRead &&
+                            this.lastRead.surahNumber === surahNumber &&
+                            this.lastRead.ayatNumber === ayatNumber;
+                },
+                toggleAyatBookmark(ayat) {
+                    if (this.isAyatBookmarked(this.detail.nomor, ayat.nomor)) {
+                        this.lastRead = null;
+                    } else {
+                        this.lastRead = {
+                            surahNumber: this.detail.nomor,
+                            surahName: this.detail.asma,
+                            ayatNumber: ayat.nomor,
+                            ar: ayat.ar,
+                            tr: ayat.tr,
+                            id: ayat.id
+                        };
+                    }
+                },
+                goToLastRead() {
+                    if (this.lastRead) {
+                        this.getDetail(this.lastRead.surahNumber);
+                        $('#detailModal').modal('show');
+                        this.$nextTick(() => {
+                            setTimeout(() => {
+                                let t = document.getElementById(`ayat-${this.lastRead.ayatNumber}`);
+                                if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }, 500);
+                        });
+                    }
+                },
+                clearLastRead() {
+                    this.lastRead = null;
+                },
+                isSurahBookmarked(surahNumber) {
+                    return !!this.bookmarkedSurahs[surahNumber];
+                },
+                toggleSurahBookmark(surah) {
+                    if (this.isSurahBookmarked(surah.nomor)) {
+                        this.$delete(this.bookmarkedSurahs, surah.nomor);
+                        surah.isFavorite = false;
+                    } else {
+                        this.$set(this.bookmarkedSurahs, surah.nomor, surah);
+                        surah.isFavorite = true;
+                    }
+                },
+                filterSurahs() {
+                    this.currentPage = 1; // Reset ke halaman pertama saat pencarian
+                },
+                previousPage() {
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                    }
+                },
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                    }
+                },
+                prevSurah() {
+                    if (this.hasPrev) {
+                        let prevSurah = this.filteredSurahs[this.currentIndex - 1];
+                        this.getDetail(prevSurah.nomor);
+                    }
+                },
+                nextSurah() {
+                    if (this.hasNext) {
+                        let nextSurah = this.filteredSurahs[this.currentIndex + 1];
+                        this.getDetail(nextSurah.nomor);
+                    }
+                },
+                toggleShowFavorites() {
+                    this.showFavorites = !this.showFavorites;
+                    this.currentPage = 1; // Reset ke halaman pertama saat beralih mode favorit
+                }
+            },
+            mounted() {
+                this.loading = true;
+                this.$http.get('https://equran.id/api/surat')
+                    .then(res => {
+                        this.allSurahs = res.body.map(surah => {
+                            surah.isFavorite = this.isSurahBookmarked(surah.nomor);
+                            return surah;
+                        });
+                        this.loading = false;
+                    })
+                    .catch(err => {
+                        console.log('error', err);
+                        this.loading = false;
+                    });
+            
+                $('#detailModal').on('hidden.bs.modal', () => {
+                    if (this.surahAudio) {
+                        this.surahAudio.pause();
+                        this.surahAudio.currentTime = 0;
+                        this.surahAudioPlaying = false;
+                    }
+                    if (this.currentAudio) {
+                        this.currentAudio.pause();
+                        this.currentAudio.currentTime = 0;
+                        this.isPlaying = false;
+                        this.currentAudio = null;
+                        this.currentAudioIndex = null;
+                    }
+                });
+            }
         });
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
