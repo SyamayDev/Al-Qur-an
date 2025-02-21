@@ -52,6 +52,11 @@
       padding: 0.5rem;
     } 
 
+    /* wrap text untuk th agar tidak memanjang kesamping */
+    table.dataTable thead th {
+      white-space: nowrap;
+    }
+
 /* ===========================================
    ============== LIGHT MODE =================
    =========================================== */
@@ -361,9 +366,9 @@ body {
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Nama Surah</th>
+                      <th>Surah</th>
                       <th>Arti</th>
-                      <th>Total Ayat</th>
+                      <th>Ayat</th>
                       <th><i style="margin-left: 10px;" class="fas fa-star"></i></th>
                     </tr>
                   </thead>
