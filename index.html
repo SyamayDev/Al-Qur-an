@@ -42,20 +42,65 @@
 
   <style>
 
-    /* dataTables tidak keluar dari card body saat di mobile */
-    .card-body {
-      overflow-x: auto;
-    }
+/* Untuk tabel DataTables secara umum */
+table.dataTable {
+  width: 100% !important;
+  table-layout: auto !important;
+  white-space: normal !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-    /* perkecil padding card-body */
-    .card-body {
-      padding: 0.5rem;
-    } 
+/* Header tabel */
+table.dataTable thead th {
+  background-color: #e9ecef;
+  color: #212529;
+  border-bottom: 2px solid #dee2e6;
+  padding: 0.5rem;
+  white-space: nowrap; /* Mencegah header meluber */
+}
 
-    /* wrap text untuk th agar tidak memanjang kesamping */
-    table.dataTable thead th {
-      white-space: nowrap;
-    }
+/* Sel tubuh tabel */
+table.dataTable tbody td {
+  padding: 0.5rem;
+  word-break: break-word; /* Memastikan teks patah pada batas kata, bukan di tengah kata */
+  overflow-wrap: break-word; /* Alternatif untuk browser lama */
+  white-space: normal; /* Memastikan teks membungkus secara alami */
+  max-width: 0; /* Membiarkan lebar kolom menyesuaikan secara otomatis */
+}
+
+/* Spesifik untuk kolom "Arti" pada layar kecil (mobile) */
+@media (max-width: 767px) {
+  table.dataTable {
+    font-size: 0.8rem; /* Mengurangi ukuran font pada layar kecil */
+  }
+
+  table.dataTable tbody td {
+    padding: 0.3rem; /* Mengurangi padding pada layar kecil */
+    max-width: 150px; /* Batasi lebar maksimum sel untuk kolom "Arti" */
+  }
+
+  /* Pastikan kolom "Arti" tidak terpotong di tengah kata */
+  table.dataTable tbody td:nth-child(3) { /* Kolom ke-3 adalah "Arti" */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    overflow: hidden; /* Menyembunyikan overflow jika terlalu panjang */
+  }
+
+  /* Membatasi lebar tabel agar tetap di dalam card-body */
+  .card-body {
+    overflow-x: auto; /* Scroll horizontal jika tabel terlalu lebar */
+  }
+}
+
+/* Untuk dark mode, pastikan konsistensi pada mobile */
+@media (prefers-color-scheme: dark) and (max-width: 767px) {
+  table.dataTable tbody td:nth-child(3) {
+    background-color: #1e1e1e !important;
+    color: #e9ecef !important;
+  }
+}
 
 /* ===========================================
    ============== LIGHT MODE =================
@@ -71,7 +116,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
   }
   .navbar-brand {
-    font-size: 40px;
+    font-size: 35px;
     font-family: 'Amiri', serif;
     color: #fff9d6;
     font-weight: bold;
