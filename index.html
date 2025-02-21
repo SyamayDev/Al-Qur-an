@@ -118,11 +118,11 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: background 0.3s ease, box-shadow 0.3s ease; /* Hanya transisi background dan shadow */
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
         .surah-card:hover {
-            background: linear-gradient(135deg, #e9ecef, #f8f9fa); /* Hanya ubah background */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.553); /* Tambah shadow tanpa pergerakan */
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.553);
         }
         .surah-card .arabic-name {
             font-family: 'Lateef', serif;
@@ -264,7 +264,7 @@
             align-items: center;
             background: linear-gradient(135deg, #dcdcdc, #e9ecef);
             border-radius: 25px;
-
+            padding: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: background 0.3s ease, transform 0.3s ease;
             animation: audioFadeIn 0.8s ease;
@@ -309,30 +309,6 @@
                 75% { background: linear-gradient(45deg, #1e1e1e, #121212); }
                 100% { background: linear-gradient(45deg, #121212, #1e1e1e); }
             }
-
-                /* Select2 Overrides */
-    .select2-container--default .select2-selection--single {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-      border: 1px solid #666 !important;
-    }
-    .select2-container--default .select2-selection__rendered { color: #e9ecef !important; }
-    .select2-container--default .select2-results__option--selectable {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-      background-color: #333 !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-results__message {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
-    .select2-container--default .select2-search--dropdown .select2-search__field {
-      background-color: #1e1e1e !important;
-      color: #e9ecef !important;
-    }
             .navbar {
                 background: linear-gradient(45deg, #1c7c54, #145f3f) !important;
             }
@@ -375,6 +351,30 @@
             .audio-player { background: linear-gradient(135deg, #2d2d2d, #1e1e1e); }
             .audio-player:hover { background: linear-gradient(135deg, #1c7c54, #34c759); }
             .voice-popup { background: rgba(30, 30, 30, 0.95); color: #80ffa7; }
+            
+            /* Select2 Overrides */
+    .select2-container--default .select2-selection--single {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+      border: 1px solid #666 !important;
+    }
+    .select2-container--default .select2-selection__rendered { color: #e9ecef !important; }
+    .select2-container--default .select2-results__option--selectable {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+    }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+      background-color: #333 !important;
+      color: #e9ecef !important;
+    }
+    .select2-container--default .select2-results__message {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+      background-color: #1e1e1e !important;
+      color: #e9ecef !important;
+    }
         }
 
         /* Responsive */
@@ -590,12 +590,20 @@
                     let filtered = this.allSurahs;
                     if (this.showFavorites) filtered = filtered.filter(s => this.isSurahBookmarked(s.nomor));
                     if (this.searchQuery) {
-                        const query = this.searchQuery.toLowerCase();
-                        filtered = filtered.filter(s => 
-                            s.nama_latin.toLowerCase().includes(query) ||
-                            s.nama.toLowerCase().includes(query) ||
-                            s.arti.toLowerCase().includes(query)
-                        );
+                        // Normalisasi query: hapus spasi dan tanda hubung, ubah ke huruf kecil
+                        const query = this.searchQuery.toLowerCase().replace(/[\s-]/g, '');
+                        filtered = filtered.filter(s => {
+                            // Normalisasi nama surah dengan cara yang sama
+                            const namaLatinNormalized = s.nama_latin.toLowerCase().replace(/[\s-]/g, '');
+                            const namaNormalized = s.nama.toLowerCase().replace(/[\s-]/g, '');
+                            const artiNormalized = s.arti.toLowerCase().replace(/[\s-]/g, '');
+                            // Cek apakah query cocok dengan salah satu field yang dinormalisasi
+                            return (
+                                namaLatinNormalized.includes(query) ||
+                                namaNormalized.includes(query) ||
+                                artiNormalized.includes(query)
+                            );
+                        });
                     }
                     return filtered;
                 },
