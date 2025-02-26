@@ -1,3 +1,4 @@
+
 var app = new Vue({
     el: '#app',
     data: {
@@ -22,7 +23,9 @@ var app = new Vue({
         currentPage: 1,
         itemsPerPage: 12, // 12 surah per halaman di desktop
         showVoicePopup: false,
-        voiceText: ''
+        voiceText: '',
+        showShareOptions: {}, // Objek untuk mengontrol visibilitas opsi share per ayat
+        shareText: {} // Objek untuk menyimpan teks share per ayat
     },
     computed: {
         filteredSurahs() {
@@ -145,11 +148,30 @@ var app = new Vue({
                 setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
             });
         },
-        shareAyat(platform, item) {
-            let text = `${item.ar}\n\n${item.id}\n\n(Dibagikan dari Al-Qur'an Digital)`;
-            if (platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-            else if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://example.com')}&quote=${encodeURIComponent(text)}`, '_blank');
-            else if (platform === 'instagram') window.open('https://instagram.com/', '_blank');
+        shareAyat(ayat) {
+            const shareText = `Surat ${this.detail.asma} - Ayat ${ayat.nomor}\n\nArab: ${ayat.ar}\n\nLatin: ${ayat.tr}\n\nTerjemahan: ${ayat.id}\n\n(Dibagikan dari Al-Qur'an Digital)`;
+            this.$set(this.shareText, ayat.nomor, shareText);
+
+            if (navigator.share) {
+                navigator.share({
+                    title: `Surat ${this.detail.asma} - Ayat ${ayat.nomor}`,
+                    text: shareText
+                }).then(() => {
+                    console.log('Ayat berhasil dibagikan');
+                }).catch((error) => {
+                    console.error('Error sharing:', error);
+                    this.$set(this.showShareOptions, ayat.nomor, true);
+                });
+            } else {
+                this.$set(this.showShareOptions, ayat.nomor, true);
+            }
+        },
+        copyShareText(ayatNumber) {
+            navigator.clipboard.writeText(this.shareText[ayatNumber]).then(() => {
+                alert('Teks ayat telah disalin ke clipboard.');
+            }).catch(err => {
+                console.error('Gagal menyalin teks:', err);
+            });
         },
         initSelect2() {
             $('#ayatSelect').select2({
@@ -296,6 +318,8 @@ var app = new Vue({
             this.isPlaying = false;
             this.currentAudio = null;
             this.currentAudioIndex = null;
+            this.showShareOptions = {}; // Reset opsi share saat modal ditutup
+            this.shareText = {}; // Reset teks share saat modal ditutup
         });
     }
 });

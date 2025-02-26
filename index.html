@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -21,14 +21,12 @@
     <link rel="stylesheet" href="style.css">
 
     <title>Al-Qur'an Digital</title>
-
-
 </head>
 <body>
     <div id="app" class="animate__animated animate__fadeIn">
         <!-- Navbar -->
         <nav class="navbar navbar-dark">
-            <a class="navbar-brand animate__animated animate__pulse animate__infinite" href="#">Al-Qur'an Digital</a>
+            <a class="navbar-brand animate__animated animate__pulse animate__infinite" href="#"><i class="fas fa-quran"></i> Al-Qur'an Digital</a>
         </nav>
 
         <div class="container mt-4">
@@ -149,13 +147,13 @@
                                                             <button class="btn btn-sm btn-outline-info ml-2" @click="toggleAyatBookmark(ayat)">
                                                                 <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
                                                             </button>
-                                                            <div class="btn-group ml-2">
-                                                                <button class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">Share</button>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('whatsapp', ayat)"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('facebook', ayat)"><i class="fab fa-facebook-f"></i> Facebook</a>
-                                                                    <a class="dropdown-item" href="#" @click.prevent="shareAyat('instagram', ayat)"><i class="fab fa-instagram"></i> Instagram</a>
-                                                                </div>
+                                                            <button class="btn btn-sm btn-success ml-2" @click="shareAyat(ayat)">Bagikan</button>
+                                                            <div class="share-options" v-if="showShareOptions[ayat.nomor]">
+                                                                <p>Bagikan melalui:</p>
+                                                                <a :href="`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText[ayat.nomor])}`" target="_blank">WhatsApp</a>
+                                                                <a :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://alquran-digital.example.com')}&quote=${encodeURIComponent(shareText[ayat.nomor])}`" target="_blank">Facebook</a>
+                                                                <a href="https://www.instagram.com/" target="_blank">Instagram</a>
+                                                                <a href="#" @click.prevent="copyShareText(ayat.nomor)">Salin Teks</a>
                                                             </div>
                                                         </div>
                                                         <hr>
@@ -190,7 +188,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="script.js"></script>
 
+    <script src="script.js"></script>
 </body>
 </html>
