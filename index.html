@@ -138,16 +138,16 @@
                                                                 <i v-if="copiedAyats[ayat.nomor]" class="fas fa-check copied-check"></i>
                                                                 <i v-else class="fas fa-copy"></i> Copy
                                                             </button>
-                                                            <button class="btn btn-sm btn-outline-primary ml-2" @click="togglePlay(ayat, idx)">
+                                                            <button class="btn btn-sm btn-outline-primary ml-1" @click="togglePlay(ayat, idx)">
                                                                 <i v-if="currentAudioIndex === idx && isPlaying" class="fas fa-stop"></i>
                                                                 <i v-else class="fas fa-play"></i>
                                                                 <span v-if="currentAudioIndex === idx && isPlaying"> Stop</span>
                                                                 <span v-else> Play</span>
                                                             </button>
-                                                            <button class="btn btn-sm btn-outline-info ml-2" @click="toggleAyatBookmark(ayat)">
+                                                            <button class="btn btn-sm btn-outline-info ml-1" @click="toggleAyatBookmark(ayat)">
                                                                 <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
                                                             </button>
-                                                            <button class="btn btn-sm btn-success ml-2" @click="shareAyat(ayat)">Bagikan</button>
+                                                            <button class="btn btn-sm btn-success ml-1" @click="shareAyat(ayat)">Bagikan</button>
                                                             <div class="share-options" v-if="showShareOptions[ayat.nomor]">
                                                                 <p>Bagikan melalui:</p>
                                                                 <a :href="`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText[ayat.nomor])}`" target="_blank">WhatsApp</a>

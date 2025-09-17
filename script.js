@@ -61,33 +61,58 @@ var app = new Vue({
         padNumber(num, digits) { return num.toString().padStart(digits, '0'); },
         getDetail(nomorSurah) {
             this.loading2 = true;
+            // Fetch data dari equran.id
             this.$http.get(`https://equran.id/api/surat/${nomorSurah}`).then(response => {
-                let res = response.body;
-                this.detail = {
-                    nomor: res.nomor,
-                    nama: res.nama,
-                    asma: res.nama_latin,
-                    arti: res.arti,
-                    type: res.tempat_turun,
-                    keterangan: res.deskripsi || ""
-                };
-                let rawAyats = res.ayat || [];
-                this.ayats = rawAyats.map(a => ({
+              let res = response.body;
+              this.detail = {
+                nomor: res.nomor,
+                nama: res.nama,
+                asma: res.nama_latin,
+                arti: res.arti,
+                type: res.tempat_turun,
+                keterangan: res.deskripsi || ""
+              };
+              let rawAyats = res.ayat || [];
+          
+              // Fetch data audio dari api.alquran.cloud
+              this.$http.get(`https://api.alquran.cloud/v1/surah/${nomorSurah}/ar.alafasy`).then(audioResponse => {
+                let audioData = audioResponse.body.data;
+                this.ayats = rawAyats.map((a, index) => {
+                  let audioUrl = audioData.ayahs[index].audio; // URL audio per ayat dari api.alquran.cloud
+                  return {
                     nomor: a.nomor,
                     ar: a.ar,
                     tr: a.tr,
                     id: a.idn,
-                    audio: `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${this.padNumber(nomorSurah, 3)}${this.padNumber(a.nomor, 3)}.mp3`
+                    audio: audioUrl // Tambahkan URL audio ke setiap ayat
+                  };
+                });
+          
+                // Tetap pertahankan audio surah keseluruhan
+                this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomorSurah}.mp3`;
+                this.initSurahAudio();
+                this.loading2 = false;
+                this.$nextTick(() => this.initSelect2());
+              }).catch(err => {
+                console.error('Error mengambil data audio:', err);
+                // Jika gagal mengambil audio, tetap tampilkan ayat tanpa audio
+                this.ayats = rawAyats.map(a => ({
+                  nomor: a.nomor,
+                  ar: a.ar,
+                  tr: a.tr,
+                  id: a.idn,
+                  audio: null // Audio tidak tersedia jika gagal
                 }));
                 this.audioUrl = `https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/${nomorSurah}.mp3`;
                 this.initSurahAudio();
                 this.loading2 = false;
                 this.$nextTick(() => this.initSelect2());
+              });
             }).catch(err => {
-                console.error('getDetail error', err);
-                this.loading2 = false;
+              console.error('Error mengambil detail surah:', err);
+              this.loading2 = false;
             });
-        },
+          },
         openDetailModal(nomorSurah) {
             this.getDetail(nomorSurah);
             $('#detailModal').modal('show');
@@ -117,7 +142,7 @@ var app = new Vue({
             let s = Math.floor(sec % 60);
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         },
-        togglePlay(item, idx) {
+                togglePlay(item, idx) {
             if (this.currentAudio && this.currentAudioIndex === idx) {
                 if (this.isPlaying) {
                     this.currentAudio.pause();
@@ -136,7 +161,10 @@ var app = new Vue({
                     if (nextIdx < this.ayats.length) this.togglePlay(this.ayats[nextIdx], nextIdx);
                     else { this.isPlaying = false; this.currentAudio = null; this.currentAudioIndex = null; }
                 };
-                this.currentAudio.play();
+                this.currentAudio.play().catch(err => {
+                    console.error('Error playing audio:', err);
+                    this.isPlaying = false;
+                });
                 let t = document.getElementById(`ayat-${idx+1}`);
                 if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
             }
@@ -305,6 +333,11 @@ var app = new Vue({
         this.loading = true;
         this.$http.get('https://equran.id/api/surat').then(res => {
             this.allSurahs = res.body;
+            let cumulative = 0;
+            this.allSurahs.forEach(s => {
+                s.startAyat = cumulative + 1;
+                cumulative += s.jumlah_ayat;
+            });
             this.loading = false;
         }).catch(err => {
             console.error('error', err);
@@ -318,8 +351,8 @@ var app = new Vue({
             this.isPlaying = false;
             this.currentAudio = null;
             this.currentAudioIndex = null;
-            this.showShareOptions = {}; // Reset opsi share saat modal ditutup
-            this.shareText = {}; // Reset teks share saat modal ditutup
+            this.showShareOptions = {};
+            this.shareText = {};
         });
     }
 });
