@@ -398,3 +398,10 @@ gap: 15px; /* Kurangi gap agar lebih rapi */
 display: none !important;
 }
 
+.arabic-text {
+direction: rtl;
+text-align: right;
+font-family: 'Lateef', serif;
+font-size: 2.5rem;
+}
+
