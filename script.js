@@ -24,8 +24,7 @@ var app = new Vue({
         itemsPerPage: 12, // 12 surah per halaman di desktop
         showVoicePopup: false,
         voiceText: '',
-        showShareOptions: {}, // Objek untuk mengontrol visibilitas opsi share per ayat
-        shareText: {} // Objek untuk menyimpan teks share per ayat
+        
     },
     computed: {
         filteredSurahs() {
@@ -176,31 +175,7 @@ var app = new Vue({
                 setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
             });
         },
-        shareAyat(ayat) {
-            const shareText = `Surat ${this.detail.asma} - Ayat ${ayat.nomor}\n\nArab: ${ayat.ar}\n\nLatin: ${ayat.tr}\n\nTerjemahan: ${ayat.id}\n\n(Dibagikan dari Al-Qur'an Digital)`;
-            this.$set(this.shareText, ayat.nomor, shareText);
-
-            if (navigator.share) {
-                navigator.share({
-                    title: `Surat ${this.detail.asma} - Ayat ${ayat.nomor}`,
-                    text: shareText
-                }).then(() => {
-                    console.log('Ayat berhasil dibagikan');
-                }).catch((error) => {
-                    console.error('Error sharing:', error);
-                    this.$set(this.showShareOptions, ayat.nomor, true);
-                });
-            } else {
-                this.$set(this.showShareOptions, ayat.nomor, true);
-            }
-        },
-        copyShareText(ayatNumber) {
-            navigator.clipboard.writeText(this.shareText[ayatNumber]).then(() => {
-                alert('Teks ayat telah disalin ke clipboard.');
-            }).catch(err => {
-                console.error('Gagal menyalin teks:', err);
-            });
-        },
+        
         initSelect2() {
             $('#ayatSelect').select2({
                 placeholder: 'Pilih ayat...',
@@ -344,15 +319,13 @@ var app = new Vue({
             this.loading = false;
         });
 
-        $('#detailModal').on('hidden.bs.modal', () => {
+                $('#detailModal').on('hidden.bs.modal', () => {
             if (this.surahAudio) this.surahAudio.pause();
             if (this.currentAudio) this.currentAudio.pause();
             this.surahAudioPlaying = false;
             this.isPlaying = false;
             this.currentAudio = null;
             this.currentAudioIndex = null;
-            this.showShareOptions = {};
-            this.shareText = {};
         });
     }
 });

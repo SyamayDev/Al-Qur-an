@@ -146,15 +146,9 @@
                                                             </button>
                                                             <button class="btn btn-sm btn-outline-info ml-1" @click="toggleAyatBookmark(ayat)">
                                                                 <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
+                                                                
                                                             </button>
-                                                            <button class="btn btn-sm btn-success ml-1" @click="shareAyat(ayat)">Bagikan</button>
-                                                            <div class="share-options" v-if="showShareOptions[ayat.nomor]">
-                                                                <p>Bagikan melalui:</p>
-                                                                <a :href="`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText[ayat.nomor])}`" target="_blank">WhatsApp</a>
-                                                                <a :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://alquran-digital.example.com')}&quote=${encodeURIComponent(shareText[ayat.nomor])}`" target="_blank">Facebook</a>
-                                                                <a href="https://www.instagram.com/" target="_blank">Instagram</a>
-                                                                <a href="#" @click.prevent="copyShareText(ayat.nomor)">Salin Teks</a>
-                                                            </div>
+                                                            
                                                         </div>
                                                         <hr>
                                                     </span>
