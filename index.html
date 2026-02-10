@@ -1,193 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="Description" content="Al-Qur'an Online Dengan Terjemahan Bahasa Indonesia (equran.id + Audio Alafasy)">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="Description"
+      content="Al-Qur'an Online Dengan Terjemahan Bahasa I  ndonesia (equran.id + Audio Alafasy)"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
     <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
     <!-- Google Font untuk teks Arab (Lateef) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lateef&display=swap">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lateef&display=swap"
+    />
     <!-- Animate.css untuk animasi -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
     <title>MyQur'an</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app" class="animate__animated animate__fadeIn">
-        <!-- Navbar -->
-        <nav class="navbar navbar-dark">
-            <a class="navbar-brand animate__animated animate__pulse animate__infinite" href="#"><i class="fas fa-quran"></i> MyQur'an</a>
-        </nav>
+      <!-- Navbar -->
+      <nav class="navbar navbar-dark">
+        <a
+          class="navbar-brand animate__animated animate__pulse animate__infinite"
+          href="#"
+          ><i class="fas fa-quran"></i> MyQur'an</a
+        >
+      </nav>
 
-        <div class="container mt-4">
-            <div v-if="lastRead" class="alert alert-info animate__animated animate__bounceIn" @click="goToLastRead">
-                Terakhir Baca: Surat {{ lastRead.surahName }} - Ayat {{ lastRead.ayatNumber }}
-                <button class="close" @click.stop="clearLastRead"><span>×</span></button>
-            </div>
+      <div class="container mt-4">
+        <div
+          v-if="lastRead"
+          class="alert alert-info animate__animated animate__bounceIn"
+          @click="goToLastRead"
+        >
+          Terakhir Baca: Surat {{ lastRead.surahName }} - Ayat {{
+          lastRead.ayatNumber }}
+          <button class="close" @click.stop="clearLastRead">
+            <span>×</span>
+          </button>
+        </div>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card my-1 border-0 shadow animate__animated animate__zoomIn">
-                        <div class="card-header my-card-header d-flex justify-content-between align-items-center">
-                            <span class="animate__animated animate__fadeInLeft">Daftar Surah</span>
-                            <div>
-                                <button class="btn btn-outline-light btn-sm mr-2 animate__animated animate__rotateIn" @click="toggleShowFavorites">
-                                    <i :class="{'fas fa-star text-warning': showFavorites, 'far fa-star': !showFavorites}"></i>
-                                </button>
-                                <button class="btn btn-outline-light btn-sm animate__animated animate__rotateIn" @click="refreshPage">
-                                    <i class="fas fa-sync-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="search-container">
-                                <input type="text" id="surahSearch" v-model="searchQuery" placeholder="Cari surah..." @input="filterSurahs">
-                                <button class="voice-search-btn" @click="startVoiceSearch"><i class="fas fa-microphone"></i></button>
-                            </div>
-                            <div v-if="loading" class="d-flex justify-content-center">
-                                <div class="spinner"></div>
-                            </div>
-                            <div v-else class="surah-list">
-                                <div v-for="data in paginatedSurahs" :key="data.nomor" class="surah-card" @click="openDetailModal(data.nomor)">
-                                    <button class="favorite-btn" @click.stop="toggleSurahBookmark(data)">
-                                        <i :class="{'fas fa-star text-warning': isSurahBookmarked(data.nomor), 'far fa-star': !isSurahBookmarked(data.nomor)}"></i>
-                                    </button>
-                                    <div class="arabic-name">{{ data.nama }}</div>
-                                    <div class="latin-name">{{ data.nama_latin }}</div>
-                                    <div class="translation">{{ data.arti }}</div>
-                                    <div class="verses">{{ data.jumlah_ayat }} Ayat</div>
-                                </div>
-                            </div>
-                            <div class="pagination">
-                                <button :disabled="currentPage === 1" @click="previousPage" class="animate__animated animate__fadeInLeft">Previous</button>
-                                <span class="page-number">{{ currentPage }} / {{ totalPages }}</span>
-                                <button :disabled="currentPage === totalPages" @click="nextPage" class="animate__animated animate__fadeInRight">Next</button>
-                            </div>
-                        </div>
-                        <footer>
-                            <div class="card-footer text-center my-card-footer">
-                                <small>&copy; 2025 MyQur'an. Developed by <a href="https://www.instagram.com/syahrilmaymubdimandai/" target="_blank" rel="noopener noreferrer">Syahril Maimubdy</a></small>
-                            </div>
-                        </footer>
-                    </div>
-
-                    <!-- Modal Detail Surah -->
-                    <div class="modal fade" id="detailModal" tabindex="-1">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content my-modal-content animate__animated animate__zoomIn">
-                                <div class="modal-header my-modal-header">
-                                    <h5 style="font-size: 2rem;" class="animate__animated animate__fadeInDown">Surat <span :class="{'alfatihah-text': detail.nomor == 1}">{{ detail.asma }}</span></h5>
-                                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div v-if="loading2" class="d-flex justify-content-center">
-                                        <div class="spinner"></div>
-                                    </div>
-                                    <div v-else>
-                                        <div class="row p-2">
-                                            <div class="col-lg-6">
-                                                <dl class="row animate__animated animate__fadeInLeft">
-                                                    <dt class="col-sm-3">Nama</dt>
-                                                    <dd class="col-sm-9">{{ detail.nama }}<br>{{ detail.asma }}</dd>
-                                                    <dt class="col-sm-3">Arti</dt>
-                                                    <dd class="col-sm-9">{{ detail.arti }}</dd>
-                                                    <dt class="col-sm-3">Diturunkan di</dt>
-                                                    <dd class="col-sm-9">{{ detail.type }}</dd>
-                                                    <dt class="col-sm-3">Audio Surah</dt>
-                                                    <dd class="col-sm-9">
-                                                        <div class="audio-player" v-if="surahAudio">
-                                                            <button @click="rewindSurahAudio"><i class="fas fa-backward"></i></button>
-                                                            <button @click="toggleSurahAudio">
-                                                                <i :class="{'fas fa-pause': surahAudioPlaying, 'fas fa-play': !surahAudioPlaying}"></i>
-                                                            </button>
-                                                            <input type="range" min="0" :max="surahAudioDuration" step="0.1" v-model="surahAudioCurrent" @input="seekSurahAudio">
-                                                            <button @click="forwardSurahAudio"><i class="fas fa-forward"></i></button>
-                                                            <span>{{ formatTime(surahAudioCurrent) }} / {{ formatTime(surahAudioDuration) }}</span>
-                                                        </div>
-                                                        <div v-else><em>Tidak ada audio surah</em></div>
-                                                    </dd>
-                                                    <dt class="col-sm-3">Keterangan</dt>
-                                                    <dd class="col-sm-9 border border-secondary" style="max-height: 250px; overflow-y: scroll;">
-                                                        <span v-html="detail.keterangan"></span>
-                                                    </dd>
-                                                </dl>
-                                            </div>
-                                            <div class="col-lg-6 animate__animated animate__fadeInRight">
-                                                <h3 class="underline">Bacaan Surat {{ detail.asma }}</h3>
-                                                <div v-if="detail.nomor !== 1" class="text-center mb-3" style="font-family: 'Lateef', serif; font-size: 2rem; color: #28a745;">
-                                                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-                                                </div>
-                                                <div class="mb-3">
-                                                    <select id="ayatSelect" style="width: 100%;"></select>
-                                                </div>
-                                                <div class="border border-success p-3" style="max-height: 450px; overflow-y: scroll; border-radius: 8px;">
-                                                    <span v-for="(ayat, idx) in ayats" :key="ayat.nomor" :id="'ayat-' + ayat.nomor" class="animate__animated animate__fadeInUp">
-                                                        <p><span class="badge badge-pill badge-success">Ayat {{ ayat.nomor }}</span></p>
-                                                        <p class="arabic-text">{{ ayat.ar }}</p>
-                                                        <p>
-                                                            <small v-html="(ayat.tr && ayat.tr.trim()) ? ayat.tr : '(Transliterasi tidak tersedia)'"></small><br>
-                                                            <small class="font-italic">{{ (ayat.id && ayat.id.trim()) ? ayat.id : '(Terjemahan tidak tersedia)' }}</small>
-                                                        </p>
-                                                        <div class="mt-2">
-                                                            <button class="btn btn-sm btn-outline-secondary animate__animated animate__pulse animate__infinite" @click="copyAyat(idx+1, ayat)">
-                                                                <i v-if="copiedAyats[ayat.nomor]" class="fas fa-check copied-check"></i>
-                                                                <i v-else class="fas fa-copy"></i> Copy
-                                                            </button>
-                                                            <button class="btn btn-sm btn-outline-primary ml-1" @click="togglePlay(ayat, idx)">
-                                                                <i v-if="currentAudioIndex === idx && isPlaying" class="fas fa-stop"></i>
-                                                                <i v-else class="fas fa-play"></i>
-                                                                <span v-if="currentAudioIndex === idx && isPlaying"> Stop</span>
-                                                                <span v-else> Play</span>
-                                                            </button>
-                                                            <button class="btn btn-sm btn-outline-info ml-1" @click="toggleAyatBookmark(ayat)">
-                                                                <i :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"></i>
-                                                                
-                                                            </button>
-                                                            
-                                                        </div>
-                                                        <hr>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-success animate__animated animate__fadeInLeft" @click="prevSurah" :disabled="!hasPrev"><i class="fas fa-arrow-left"></i></button>
-                                    <button class="btn btn-success animate__animated animate__fadeInRight" @click="nextSurah" :disabled="!hasNext"><i class="fas fa-arrow-right"></i></button>
-                                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div
+              class="card my-1 border-0 shadow animate__animated animate__zoomIn"
+            >
+              <div
+                class="card-header my-card-header d-flex justify-content-between align-items-center"
+              >
+                <span class="animate__animated animate__fadeInLeft"
+                  >Daftar Surah</span
+                >
+                <div>
+                  <button
+                    class="btn btn-outline-light btn-sm mr-2 animate__animated animate__rotateIn"
+                    @click="toggleShowFavorites"
+                  >
+                    <i
+                      :class="{'fas fa-star text-warning': showFavorites, 'far fa-star': !showFavorites}"
+                    ></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-light btn-sm animate__animated animate__rotateIn"
+                    @click="refreshPage"
+                  >
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
                 </div>
+              </div>
+              <div class="card-body">
+                <div class="search-container">
+                  <input
+                    type="text"
+                    id="surahSearch"
+                    v-model="searchQuery"
+                    placeholder="Cari surah..."
+                    @input="filterSurahs"
+                  />
+                  <button class="voice-search-btn" @click="startVoiceSearch">
+                    <i class="fas fa-microphone"></i>
+                  </button>
+                </div>
+                <div v-if="loading" class="d-flex justify-content-center">
+                  <div class="spinner"></div>
+                </div>
+                <div v-else class="surah-list">
+                  <div
+                    v-for="data in paginatedSurahs"
+                    :key="data.nomor"
+                    class="surah-card"
+                    @click="openDetailModal(data.nomor)"
+                  >
+                    <button
+                      class="favorite-btn"
+                      @click.stop="toggleSurahBookmark(data)"
+                    >
+                      <i
+                        :class="{'fas fa-star text-warning': isSurahBookmarked(data.nomor), 'far fa-star': !isSurahBookmarked(data.nomor)}"
+                      ></i>
+                    </button>
+                    <div class="arabic-name">{{ data.nama }}</div>
+                    <div class="latin-name">{{ data.nama_latin }}</div>
+                    <div class="translation">{{ data.arti }}</div>
+                    <div class="verses">{{ data.jumlah_ayat }} Ayat</div>
+                  </div>
+                </div>
+                <div class="pagination">
+                  <button
+                    :disabled="currentPage === 1"
+                    @click="previousPage"
+                    class="animate__animated animate__fadeInLeft"
+                  >
+                    Previous
+                  </button>
+                  <span class="page-number"
+                    >{{ currentPage }} / {{ totalPages }}</span
+                  >
+                  <button
+                    :disabled="currentPage === totalPages"
+                    @click="nextPage"
+                    class="animate__animated animate__fadeInRight"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+              <footer>
+                <div class="card-footer text-center my-card-footer">
+                  <small
+                    >&copy; 2025 MyQur'an. Developed by
+                    <a
+                      href="https://www.instagram.com/syahrilmaimubdymandai/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Syahril Maimubdy</a
+                    ></small
+                  >
+                </div>
+              </footer>
             </div>
-        </div>
 
-        <!-- Voice Search Popup -->
-        <div v-if="showVoicePopup" class="voice-popup" id="voicePopup">
-            <p>{{ voiceText }}</p>
+            <!-- Modal Detail Surah -->
+            <div class="modal fade" id="detailModal" tabindex="-1">
+              <div class="modal-dialog modal-xl">
+                <div
+                  class="modal-content my-modal-content animate__animated animate__zoomIn"
+                >
+                  <div class="modal-header my-modal-header">
+                    <h5
+                      style="font-size: 2rem"
+                      class="animate__animated animate__fadeInDown"
+                    >
+                      Surat
+                      <span :class="{'alfatihah-text': detail.nomor == 1}"
+                        >{{ detail.asma }}</span
+                      >
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span>×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div v-if="loading2" class="d-flex justify-content-center">
+                      <div class="spinner"></div>
+                    </div>
+                    <div v-else>
+                      <div class="row p-2">
+                        <div class="col-lg-6">
+                          <dl class="row animate__animated animate__fadeInLeft">
+                            <dt class="col-sm-3">Nama</dt>
+                            <dd class="col-sm-9">
+                              {{ detail.nama }}<br />{{ detail.asma }}
+                            </dd>
+                            <dt class="col-sm-3">Arti</dt>
+                            <dd class="col-sm-9">{{ detail.arti }}</dd>
+                            <dt class="col-sm-3">Diturunkan di</dt>
+                            <dd class="col-sm-9">{{ detail.type }}</dd>
+                            <dt class="col-sm-3">Audio Surah</dt>
+                            <dd class="col-sm-9">
+                              <div class="audio-player" v-if="surahAudio">
+                                <button @click="rewindSurahAudio">
+                                  <i class="fas fa-backward"></i>
+                                </button>
+                                <button @click="toggleSurahAudio">
+                                  <i
+                                    :class="{'fas fa-pause': surahAudioPlaying, 'fas fa-play': !surahAudioPlaying}"
+                                  ></i>
+                                </button>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  :max="surahAudioDuration"
+                                  step="0.1"
+                                  v-model="surahAudioCurrent"
+                                  @input="seekSurahAudio"
+                                />
+                                <button @click="forwardSurahAudio">
+                                  <i class="fas fa-forward"></i>
+                                </button>
+                                <span
+                                  >{{ formatTime(surahAudioCurrent) }} / {{
+                                  formatTime(surahAudioDuration) }}</span
+                                >
+                              </div>
+                              <div v-else><em>Tidak ada audio surah</em></div>
+                            </dd>
+                            <dt class="col-sm-3">Keterangan</dt>
+                            <dd
+                              class="col-sm-9 border border-secondary"
+                              style="max-height: 250px; overflow-y: scroll"
+                            >
+                              <span v-html="detail.keterangan"></span>
+                            </dd>
+                          </dl>
+                        </div>
+                        <div
+                          class="col-lg-6 animate__animated animate__fadeInRight"
+                        >
+                          <h3 class="underline">
+                            Bacaan Surat {{ detail.asma }}
+                          </h3>
+                          <div
+                            v-if="detail.nomor !== 1"
+                            class="text-center mb-3"
+                            style="
+                              font-family: 'Lateef', serif;
+                              font-size: 2rem;
+                              color: #28a745;
+                            "
+                          >
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                          </div>
+                          <div class="mb-3">
+                            <select
+                              id="ayatSelect"
+                              style="width: 100%"
+                            ></select>
+                          </div>
+                          <div
+                            class="border border-success p-3"
+                            style="
+                              max-height: 450px;
+                              overflow-y: scroll;
+                              border-radius: 8px;
+                            "
+                          >
+                            <span
+                              v-for="(ayat, idx) in ayats"
+                              :key="ayat.nomor"
+                              :id="'ayat-' + ayat.nomor"
+                              class="animate__animated animate__fadeInUp"
+                            >
+                              <p>
+                                <span class="badge badge-pill badge-success"
+                                  >Ayat {{ ayat.nomor }}</span
+                                >
+                              </p>
+                              <p class="arabic-text">{{ ayat.ar }}</p>
+                              <p>
+                                <small
+                                  v-html="(ayat.tr && ayat.tr.trim()) ? ayat.tr : '(Transliterasi tidak tersedia)'"
+                                ></small
+                                ><br />
+                                <small class="font-italic"
+                                  >{{ (ayat.id && ayat.id.trim()) ? ayat.id :
+                                  '(Terjemahan tidak tersedia)' }}</small
+                                >
+                              </p>
+                              <div class="mt-2">
+                                <button
+                                  class="btn btn-sm btn-outline-secondary animate__animated animate__pulse animate__infinite"
+                                  @click="copyAyat(idx+1, ayat)"
+                                >
+                                  <i
+                                    v-if="copiedAyats[ayat.nomor]"
+                                    class="fas fa-check copied-check"
+                                  ></i>
+                                  <i v-else class="fas fa-copy"></i> Copy
+                                </button>
+                                <button
+                                  class="btn btn-sm btn-outline-primary ml-1"
+                                  @click="togglePlay(ayat, idx)"
+                                >
+                                  <i
+                                    v-if="currentAudioIndex === idx && isPlaying"
+                                    class="fas fa-stop"
+                                  ></i>
+                                  <i v-else class="fas fa-play"></i>
+                                  <span
+                                    v-if="currentAudioIndex === idx && isPlaying"
+                                  >
+                                    Stop</span
+                                  >
+                                  <span v-else> Play</span>
+                                </button>
+                                <button
+                                  class="btn btn-sm btn-outline-info ml-1"
+                                  @click="toggleAyatBookmark(ayat)"
+                                >
+                                  <i
+                                    :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"
+                                  ></i>
+                                </button>
+                              </div>
+                              <hr />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      class="btn btn-success animate__animated animate__fadeInLeft"
+                      @click="prevSurah"
+                      :disabled="!hasPrev"
+                    >
+                      <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button
+                      class="btn btn-success animate__animated animate__fadeInRight"
+                      @click="nextSurah"
+                      :disabled="!hasNext"
+                    >
+                      <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn btn-secondary" data-dismiss="modal">
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Voice Search Popup -->
+      <div v-if="showVoicePopup" class="voice-popup" id="voicePopup">
+        <p>{{ voiceText }}</p>
+      </div>
     </div>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
