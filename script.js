@@ -176,6 +176,21 @@ var app = new Vue({
                 setTimeout(() => this.$delete(this.copiedAyats, item.nomor), 1000);
             });
         },
+        shareAyat(ayat) {
+            const shareText = `QS. ${this.detail.asma} Ayat ${ayat.nomor}\n\n${ayat.ar}\n\n${ayat.tr || ''}\n\n${ayat.id || ''}\n\nVia MyQur'an`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `QS. ${this.detail.asma} Ayat ${ayat.nomor}`,
+                    text: shareText,
+                    url: window.location.href
+                }).catch(err => console.error('Error sharing:', err));
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Teks ayat berhasil disalin ke clipboard!');
+                });
+            }
+        },
         
         initSelect2() {
             $('#ayatSelect').select2({

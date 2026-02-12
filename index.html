@@ -246,7 +246,7 @@
                     <div v-else>
                       <div class="row p-2">
                         <div class="col-lg-6">
-                          <dl class="row animate__animated animate__fadeInLeft">
+                          <dl class="row animate__animated animate__zoomIn">
                             <dt class="col-sm-3">Nama</dt>
                             <dd class="col-sm-9">
                               {{ detail.nama }}<br />{{ detail.asma }}
@@ -294,7 +294,7 @@
                           </dl>
                         </div>
                         <div
-                          class="col-lg-6 animate__animated animate__fadeInRight"
+                          class="col-lg-6 animate__animated animate__zoomIn"
                         >
                           <h3 class="underline">
                             Bacaan Surat {{ detail.asma }}
@@ -380,6 +380,13 @@
                                   <i
                                     :class="{'fas fa-bookmark': isAyatBookmarked(detail.nomor, ayat.nomor), 'far fa-bookmark': !isAyatBookmarked(detail.nomor, ayat.nomor)}"
                                   ></i>
+                                </button>
+                                <!-- SHARE -->
+                                <button
+                                  class="btn btn-sm btn-outline-success ml-1"
+                                  @click="shareAyat(ayat)"
+                                > 
+                                  <i class="fas fa-share-alt"></i> Share
                                 </button>
                               </div>
                               <hr />
