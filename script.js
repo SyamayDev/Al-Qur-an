@@ -24,6 +24,7 @@ var app = new Vue({
         itemsPerPage: 12, // 12 surah per halaman di desktop
         showVoicePopup: false,
         voiceText: '',
+        isDarkMode: false,
         
     },
     computed: {
@@ -303,6 +304,17 @@ var app = new Vue({
             localStorage.setItem('lastRead', JSON.stringify(this.lastRead));
         }
     },
+    watch: {
+        isDarkMode(val) {
+            if (val) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+    },
     mounted() {
         this.loadBookmarks();
         this.loading = true;
@@ -327,5 +339,14 @@ var app = new Vue({
             this.currentAudio = null;
             this.currentAudioIndex = null;
         });
+
+        // Theme initialization
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            this.isDarkMode = savedTheme === 'dark';
+        } else {
+            this.isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+        if (this.isDarkMode) document.body.classList.add('dark-mode');
     }
 });
