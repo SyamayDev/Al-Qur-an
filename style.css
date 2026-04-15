@@ -111,7 +111,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
-  padding: 20px;
 }
 .surah-card {
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
